@@ -378,7 +378,10 @@ namespace rics
     {
         //helpController_.DisplayContents();
         wxFileType *fileType = wxTheMimeTypesManager->GetFileTypeFromExtension(wxT("pdf"));
-        wxString command = fileType->GetOpenCommand("rics_user_manual.pdf");
+        std::string user_manual_name = "rics_user_manual_" + 
+                                       boost::lexical_cast<std::string>(RICS_VERSION) +
+                                       ".pdf";
+        wxString command = fileType->GetOpenCommand(user_manual_name);
         wxExecute(command);
         delete fileType;
     }
