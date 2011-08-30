@@ -1,4 +1,4 @@
-#Hardware components
+#summary Hardware components
 
 = Hardware Components =
 
