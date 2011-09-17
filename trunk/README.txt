@@ -1,6 +1,8 @@
 Rapid Inventory Collection System
 =================================
 
+Nariman Habili (nariman.habili@gmail.com)
+
 29 August 2011
 
 Version 1.4.0
