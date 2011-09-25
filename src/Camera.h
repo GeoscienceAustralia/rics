@@ -56,29 +56,29 @@ namespace rics
         UCArray getNextFrame();
 
         void saveImageWX();
-		void saveImageTurbo();
+        void saveImageTurbo();
 
         unsigned long height() const;
-		void setHeight(unsigned long h);
+        void setHeight(unsigned long h);
         unsigned long width() const;
         void setWidth(unsigned long w);
-		long frameNumber() const;
-		void setFrameNumber(unsigned long fn);
-		void incFrameNumber();
-		void resetFrameNumber();
+        long frameNumber() const;
+        void setFrameNumber(unsigned long fn);
+        void incFrameNumber();
+        void resetFrameNumber();
 
         void setROI(unsigned long left, unsigned long top, unsigned long height, unsigned long width);
         void setExposureTime(bool autoMode, unsigned long exposureTime);
         void setAutoMaxTime(unsigned long exposureMaxTime);
-		float maxFrameRate();
+        float maxFrameRate();
         void setFrameRate(float frameRate);
-		void setWhiteBalance(bool autoMode, char* colour, unsigned long value);
-		void setGain(bool autoMode, unsigned long gain);
+        void setWhiteBalance(bool autoMode, char* colour, unsigned long value);
+        void setGain(bool autoMode, unsigned long gain);
         void adjustPacketSize(unsigned long packetSize);
         wxString sessionName();
-		void setSessionName(const wxString& sn);
-		inline wxString sessionPath() const;
-		void setSessionPath(const wxString& sessionPath);
+        void setSessionName(const wxString& sn);
+        inline wxString sessionPath() const;
+        void setSessionPath(const wxString& sessionPath);
 
         unsigned long exposureTime();
         int uniqueID();
@@ -86,29 +86,29 @@ namespace rics
         wxString cameraName();
         float actualFrameRate();
 
-		inline std::string frameName();
+        inline std::string frameName();
 
-	private:
-		HANDLE handle();
+    private:
+        HANDLE handle();
 
-	private:
+    private:
         HANDLE hCamera_;
 
         unsigned long height_;
         unsigned long width_;
-		unsigned long resizeFactor_;
-		unsigned long heightResized_;
-    	unsigned long widthResized_;
-		unsigned long stepBytesResized_;
-		unsigned long stepBytesOriginal_;
+        unsigned long resizeFactor_;
+        unsigned long heightResized_;
+        unsigned long widthResized_;
+        unsigned long stepBytesResized_;
+        unsigned long stepBytesOriginal_;
 
-		long frameNumber_;
-		wxString sessionPath_;
+        long frameNumber_;
+        wxString sessionPath_;
 
-		UCArray frameBuffer_;
-		UCArray resized_;
-		UCArray imageBuffer_;
-		tPvFrame image_;
+        UCArray frameBuffer_;
+        UCArray resized_;
+        UCArray imageBuffer_;
+        tPvFrame image_;
 
         wxString sessionName_;
     };

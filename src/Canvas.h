@@ -48,18 +48,18 @@ namespace rics
     {
     public:
         Canvas(wxWindow* parent, 
-			   wxWindowID id, 
-			   const wxPoint &pos, 
-			   const wxSize &size, 
-			   Cameras* cameras, 
-			   GPS* gps, 
-			   Session* session,
-			   Database* db,
-			   NotePad* np);
+               wxWindowID id, 
+               const wxPoint &pos, 
+               const wxSize &size, 
+               Cameras* cameras, 
+               GPS* gps, 
+               Session* session,
+               Database* db,
+               NotePad* np);
         ~Canvas();
 
         void deleteAllThreads();
-		bool play();
+        bool play();
         bool stop();
 
         void setCameraNames();
@@ -68,17 +68,17 @@ namespace rics
         enum
         {
             ID_Timer = 1000,
-			ID_NotePad,
+            ID_NotePad,
         };
 
     private:
         void onCameraEvent(wxCommandEvent& event);
         void onGPSEvent(wxCommandEvent& WXUNUSED(event));
 
-		inline void deleteCameraThreads();
-		inline void deleteGPSThread();
-	
-	private:        
+        inline void deleteCameraThreads();
+        inline void deleteGPSThread();
+    
+    private:        
         Cameras* cameras_;
         size_t numCameras_;
 
@@ -101,7 +101,7 @@ namespace rics
         ImagePanel* panel1_;
         ImagePanel* panel2_;
         ImagePanel* panel3_;
-		ImagePanel* panel4_;
+        ImagePanel* panel4_;
 
         wxStaticText* latitudeValue_;
         wxStaticText* longitudeValue_;
@@ -112,13 +112,13 @@ namespace rics
         wxStaticText* altValue_;
         wxStaticText* qualityValue_;
 
-		wxString latSexagesimal_;
-		wxString lonSexagesimal_;
+        wxString latSexagesimal_;
+        wxString lonSexagesimal_;
         wxString lat_;
         wxString lon_;
         wxString bear_;
         wxString timeStamp_;
-		wxString formatTime_;
+        wxString formatTime_;
         wxString speed_;
         wxString satellites_;
         wxString altitude_;
@@ -126,11 +126,11 @@ namespace rics
 
         std::vector<ImagePanel*> panels_;
 
-		wxTextCtrl* textCtrl_;
+        wxTextCtrl* textCtrl_;
 
         Database* db_;
 
-		NotePad* np_;
+        NotePad* np_;
 
         DECLARE_EVENT_TABLE()
 

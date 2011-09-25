@@ -46,15 +46,15 @@ along with RICS.  If not, see <http://www.gnu.org/licenses/>.
       Added camera ID (uniqueID) as a field to the SQLite database
       Removed automatic launch of ArcPad from RICS.
 1.4.0 Changed to jpeg-turbo to speed up image compression.
-	  Changed sqlite settings to speed up database writes.
-	  Added max exposure time to counter the effect of cameras passing a dark region
-	  and causing image blur for a few images afterwards.
-	  Addition of an NMEA 0183 parser and open-source serial communication 
-	  library to replace the Marshallsoft GPS component. The codebase is now completely 
-	  open-source.
-	  GPS date/time now added to session names (optional).
-	  Added bearing (heading) to the time/lat/lon already recorded in the
-	  notepad spreadsheet.
+      Changed sqlite settings to speed up database writes.
+      Added max exposure time to counter the effect of cameras passing a dark region
+      and causing image blur for a few images afterwards.
+      Addition of an NMEA 0183 parser and open-source serial communication 
+      library to replace the Marshallsoft GPS component. The codebase is now completely 
+      open-source.
+      GPS date/time now added to session names (optional).
+      Added bearing (heading) to the time/lat/lon already recorded in the
+      notepad spreadsheet.
 ****************************************************************************/
 
 #define RICS_VERSION "1.4.0"

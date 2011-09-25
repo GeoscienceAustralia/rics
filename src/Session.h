@@ -37,8 +37,8 @@ namespace rics
         saveImages_(false),
         db_(false),
         currentFrame_(numCameras_, 0),
-		sessionName_(""),
-		path_("")
+        sessionName_(""),
+        path_("")
         {
         }
 

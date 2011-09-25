@@ -61,7 +61,7 @@ namespace rics
             session_->setCreateDB(false);
 
             //A database is created, or if one already exists, the max frame number is retrieved.
-	        wxString filename = sessionDir + "\\" + sessionName + ".sdb";
+            wxString filename = sessionDir + "\\" + sessionName + ".sdb";
 
             if (wxFileExists(filename))//if database  exists
             {
@@ -72,7 +72,7 @@ namespace rics
                 {
                     wxString cameraName = camera(i).cameraName();
                     db_->createTable(cameraName);//In case extra camera(s) are attached, new tables need to be created. 
-                    long int currentFrame = db_->maxFrame(cameraName);	            
+                    long int currentFrame = db_->maxFrame(cameraName);              
                     if (!currentFrame)
                     {
                         session_->setCurrentFrame(i, currentFrame);//Table is empty
@@ -85,9 +85,9 @@ namespace rics
             }
             else //if not, error
             {
-			    wxMessageDialog(frame_, "Database \"" + sessionName + ".sdb\" does not exist. Cannot open session.", "Session Database Error", wxICON_HAND)
+                wxMessageDialog(frame_, "Database \"" + sessionName + ".sdb\" does not exist. Cannot open session.", "Session Database Error", wxICON_HAND)
                 .ShowModal();
-			    return;            
+                return;            
             }
             
             //Stop cameras (and therefore delete threads) if playing to make sure no images are saved and no entries in
@@ -107,7 +107,7 @@ namespace rics
 
                 if (!wxDirExists(dir))
                 {
-                    wxMkdir(dir);					
+                    wxMkdir(dir);                   
                 }
 
                 camera(i).setSessionPath(dir);

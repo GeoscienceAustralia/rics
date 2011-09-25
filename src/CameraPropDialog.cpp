@@ -35,21 +35,21 @@ namespace rics
     numCameras_((*cameras_).size()),
     cameraSelectET_(false),
     cameraSelectGain_(false),
-	cameraSelectWB_(false),
-	selectComboBoxET_(0),
+    cameraSelectWB_(false),
+    selectComboBoxET_(0),
     selectComboBoxGain_(0),
     selectComboBoxWB_(0),
     exposureTimes_(std::vector<double>(numCameras_, 10.0)),
-	autoMaxTimes_(std::vector<double>(numCameras_, 5.0)),
-	autoET_(std::vector<bool>(numCameras_, false)),
+    autoMaxTimes_(std::vector<double>(numCameras_, 5.0)),
+    autoET_(std::vector<bool>(numCameras_, false)),
     gains_(std::vector<int>(numCameras_, 0)),
     autoGain_(std::vector<bool>(numCameras_, false)),
     whiteBalanceRed_(std::vector<unsigned long>(numCameras_, 181)),
-	whiteBalanceBlue_(std::vector<unsigned long>(numCameras_, 202)),
-	autoWB_(std::vector<bool>(numCameras_, false)),
+    whiteBalanceBlue_(std::vector<unsigned long>(numCameras_, 202)),
+    autoWB_(std::vector<bool>(numCameras_, false)),
     frameRate_(4),
-	packetSize_(6000/*8228*/),
-	play_(false),
+    packetSize_(6000/*8228*/),
+    play_(false),
     notebook_(new wxNotebook(this, wxID_ANY, wxDefaultPosition))
     {
         wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
@@ -61,7 +61,7 @@ namespace rics
         createWhiteBalancePage(notebook_);
         createFrameRatePage(notebook_);
         createPacketSizePage(notebook_);
-		topSizer->Add(notebook_, 1, wxEXPAND);
+        topSizer->Add(notebook_, 1, wxEXPAND);
 
         //Button
         wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -80,47 +80,47 @@ namespace rics
     {
         textCtrlET_->ChangeValue(boost::lexical_cast<std::string>(exposureTime()));
         textCtrlWBRed_->ChangeValue(boost::lexical_cast<std::string>(whiteBalance("R")));
-		textCtrlWBBlue_->ChangeValue(boost::lexical_cast<std::string>(whiteBalance("B")));
-		textCtrlFR_->ChangeValue(boost::lexical_cast<std::string>(frameRate()));
+        textCtrlWBBlue_->ChangeValue(boost::lexical_cast<std::string>(whiteBalance("B")));
+        textCtrlFR_->ChangeValue(boost::lexical_cast<std::string>(frameRate()));
         textCtrlPS_->ChangeValue(boost::lexical_cast<std::string>(packetSize()));
         
         EndModal(wxID_CANCEL);
     }
 
-	//////OK Buttons
+    //////OK Buttons
     void CameraPropDialog::onOK(wxCommandEvent& WXUNUSED(event))
     {
-		//make sure camera names are not duplicates.
+        //make sure camera names are not duplicates.
         if (!checkDuplicateCameraNames())
         {
-			wxMessageDialog(this, "Duplicate camera names chosen. Please assign a unique camera name to each camera",
+            wxMessageDialog(this, "Duplicate camera names chosen. Please assign a unique camera name to each camera",
             "Duplicate Camera Name Error", wxICON_HAND)
             .ShowModal();
-			return;
+            return;
         }        
 
         bool val = true;
-		
-		if (!checkBoxAutoET_->IsChecked())
+        
+        if (!checkBoxAutoET_->IsChecked())
         {
             val = txtCtrlET(); 
         }
 
-		if (!checkBoxAutoWB_->IsChecked())
+        if (!checkBoxAutoWB_->IsChecked())
         {
             val = txtCtrlWBRed() && val; //"&& val" to make sure number is entered in text box
-			val = txtCtrlWBBlue() && val;
+            val = txtCtrlWBBlue() && val;
         } 
 
-		if (!play())
-		{
-			val = txtCtrlPS() && val;
-		}
+        if (!play())
+        {
+            val = txtCtrlPS() && val;
+        }
 
-		if (val) //only end if valid number(s) entered in text box(es)
-		{
-			EndModal(wxID_OK);
-		}
+        if (val) //only end if valid number(s) entered in text box(es)
+        {
+            EndModal(wxID_OK);
+        }
     }
     
     ////////////////////////////////////////////////////////////////////////////////////////
@@ -144,7 +144,7 @@ namespace rics
         wxStaticText* cameraNameText = new wxStaticText(panel, wxID_ANY, wxT("Camera Name:"), wxDefaultPosition, wxDefaultSize, 0);
         gSizer->Add(cameraNameText, 0, wxTOP | wxLEFT, 10);
 
-	    wxArrayString cameras;
+        wxArrayString cameras;
         for (size_t i = 0; i < numCameras_; ++i)
 
         {
@@ -159,7 +159,7 @@ namespace rics
                                    wxLB_SINGLE);
         cameraIDs_->SetFirstItem(0);
 
-	    
+        
         wxArrayString positions;
         positions.Add("L");
         positions.Add("LF");
@@ -178,9 +178,9 @@ namespace rics
                                                   positions, 
                                                   wxCB_READONLY); 
 
-	    gSizer->Add(cameraIDs_, 0, wxALL, 0);
+        gSizer->Add(cameraIDs_, 0, wxALL, 0);
         gSizer->Add(cameraPositionsComboBox_, 0, wxLEFT, 10);
-	    cameraNamesSizer->Add(gSizer, 0, wxLEFT | wxBOTTOM, 10);
+        cameraNamesSizer->Add(gSizer, 0, wxLEFT | wxBOTTOM, 10);
         
         wxStaticBitmap* carNavigation = new wxStaticBitmap(panel, wxID_ANY, wxBitmap(nav_car));
         cameraNamesSizer->Add(carNavigation, 0, wxALL, 5);
@@ -230,9 +230,9 @@ namespace rics
             }
     }
 
-	void CameraPropDialog::onCameraPositions(wxCommandEvent& WXUNUSED(event))
+    void CameraPropDialog::onCameraPositions(wxCommandEvent& WXUNUSED(event))
     {
-		wxString position = cameraPositionsComboBox_->GetStringSelection();
+        wxString position = cameraPositionsComboBox_->GetStringSelection();
         int selection = cameraIDs_->GetSelection();
 
         if (selection != wxNOT_FOUND)
@@ -272,9 +272,9 @@ namespace rics
         cameraSelectSizer->SetMinSize(300, 0);
 
         checkBoxCameraSelectET_ = new wxCheckBox(panel, ID_CheckBoxCameraSelectET, 
-												 "Apply to camera:", wxDefaultPosition, wxDefaultSize, 0);
-		
-		wxArrayString strings;
+                                                 "Apply to camera:", wxDefaultPosition, wxDefaultSize, 0);
+        
+        wxArrayString strings;
         for (size_t i = 0; i < numCameras_; ++i)
         {
             strings.Add("Camera: " + boost::lexical_cast<std::string>((*cameras_)[i].uniqueID()));
@@ -288,10 +288,10 @@ namespace rics
                                                strings, 
                                                wxCB_READONLY | wxCB_SORT);
         
-		cameraSelectChoiceET_->Disable();
-		
-		cameraSelectSizer->Add(checkBoxCameraSelectET_, 0, wxALIGN_CENTER | wxALL, 10);
-		cameraSelectSizer->Add(cameraSelectChoiceET_, 0, wxALIGN_CENTER | wxALL, 10);
+        cameraSelectChoiceET_->Disable();
+        
+        cameraSelectSizer->Add(checkBoxCameraSelectET_, 0, wxALIGN_CENTER | wxALL, 10);
+        cameraSelectSizer->Add(cameraSelectChoiceET_, 0, wxALIGN_CENTER | wxALL, 10);
         
         //Exposure Time
         wxStaticBox* shutterSpeed = new wxStaticBox(panel, wxID_STATIC, wxT("Exposure Time (ms)"));                                   
@@ -319,14 +319,14 @@ namespace rics
                                      wxSize(50, -1), 
                                      wxTE_PROCESS_ENTER);
 
-		wxBoxSizer* textSizerExposure = new wxBoxSizer(wxHORIZONTAL);
-		wxStaticText* staticTextExposure = new wxStaticText(panel, wxID_ANY, wxT("Exposure Time"), wxDefaultPosition, wxDefaultSize);
-		textSizerExposure->Add(staticTextExposure, 0, wxLEFT, 5);
+        wxBoxSizer* textSizerExposure = new wxBoxSizer(wxHORIZONTAL);
+        wxStaticText* staticTextExposure = new wxStaticText(panel, wxID_ANY, wxT("Exposure Time"), wxDefaultPosition, wxDefaultSize);
+        textSizerExposure->Add(staticTextExposure, 0, wxLEFT, 5);
 
-		sliderSizer->Add(textSizerExposure, 0, wxLEFT, 5);
-		sliderSizer->Add(sliderET_, 0, wxLEFT, 5);
+        sliderSizer->Add(textSizerExposure, 0, wxLEFT, 5);
+        sliderSizer->Add(sliderET_, 0, wxLEFT, 5);
         sliderSizer->Add(textCtrlET_, 0, wxLEFT, 5);
-		sliderET_->Disable();
+        sliderET_->Disable();
         textCtrlET_->Disable();
 
         //Exposure Auto Max Time (AMT)
@@ -347,17 +347,17 @@ namespace rics
                                       wxSize(50, -1), 
                                       wxTE_PROCESS_ENTER);
 
-		wxBoxSizer* textSizerAMT = new wxBoxSizer(wxHORIZONTAL);
-		wxStaticText* staticTextAMT = new wxStaticText(panel, wxID_ANY, wxT("Auto Max Time"), wxDefaultPosition, wxDefaultSize);
-		textSizerAMT->Add(staticTextAMT, 0, wxLEFT, 5);
+        wxBoxSizer* textSizerAMT = new wxBoxSizer(wxHORIZONTAL);
+        wxStaticText* staticTextAMT = new wxStaticText(panel, wxID_ANY, wxT("Auto Max Time"), wxDefaultPosition, wxDefaultSize);
+        textSizerAMT->Add(staticTextAMT, 0, wxLEFT, 5);
 
-		sliderSizerAMT->Add(textSizerAMT, 0, wxLEFT, 5);
-		sliderSizerAMT->Add(sliderAMT_, 0, wxLEFT, 5);
+        sliderSizerAMT->Add(textSizerAMT, 0, wxLEFT, 5);
+        sliderSizerAMT->Add(sliderAMT_, 0, wxLEFT, 5);
         sliderSizerAMT->Add(textCtrlAMT_, 0, wxLEFT, 5);
 
         //text showing min and max values
         wxBoxSizer* textSizer = new wxBoxSizer(wxHORIZONTAL);
-	    wxStaticText* staticText1 = new wxStaticText(panel, wxID_ANY, wxT("0.025"), wxDefaultPosition, wxDefaultSize);
+        wxStaticText* staticText1 = new wxStaticText(panel, wxID_ANY, wxT("0.025"), wxDefaultPosition, wxDefaultSize);
         wxStaticText* staticText2 = new wxStaticText(panel, wxID_STATIC, wxT("100"), wxDefaultPosition, wxDefaultSize);
         textSizer->Add(staticText1, 0, wxLEFT, 85);
         textSizer->Add(staticText2, 0, wxLEFT, 190);
@@ -380,34 +380,34 @@ namespace rics
 
         panel->SetSizer(panelSizer);
     }
-	
-	//Either apply to all cameras to select a camera
+    
+    //Either apply to all cameras to select a camera
     void CameraPropDialog::onCheckBoxCameraSelectET(wxCommandEvent& WXUNUSED(event))
     {
         if (checkBoxCameraSelectET_->IsChecked())
         {
-			cameraSelectET_ = true;
+            cameraSelectET_ = true;
             cameraSelectChoiceET_->Enable(true);
         }
         else
         {
-			cameraSelectET_ = false;
+            cameraSelectET_ = false;
             cameraSelectChoiceET_->Enable(false);
-			setExposureTime(exposureTime());
-			setAutoET(autoET());
-			adjustCameraExposureTime();
+            setExposureTime(exposureTime());
+            setAutoET(autoET());
+            adjustCameraExposureTime();
         }
     }
 
-	//Choose a camera
-	void CameraPropDialog::onComboBoxET(wxCommandEvent& WXUNUSED(event))
+    //Choose a camera
+    void CameraPropDialog::onComboBoxET(wxCommandEvent& WXUNUSED(event))
     {
- 		selectComboBoxET_ = cameraSelectChoiceET_->GetCurrentSelection();
+        selectComboBoxET_ = cameraSelectChoiceET_->GetCurrentSelection();
         sliderET_->SetValue(static_cast<int>(exposureTime()));
-        textCtrlET_->ChangeValue(boost::lexical_cast<std::string>(exposureTime()));		
+        textCtrlET_->ChangeValue(boost::lexical_cast<std::string>(exposureTime()));     
         sliderAMT_->SetValue(static_cast<int>(autoMaxTime()));
         textCtrlAMT_->ChangeValue(boost::lexical_cast<std::string>(autoMaxTime()));
-		checkBoxAutoET_->SetValue(autoET());
+        checkBoxAutoET_->SetValue(autoET());
 
         if (autoET())
         {
@@ -425,7 +425,7 @@ namespace rics
         }
     }
     
-	//Choose an exposure value using slider
+    //Choose an exposure value using slider
     void CameraPropDialog::onSliderET(wxCommandEvent& WXUNUSED(event))
     {
         int et = sliderET_->GetValue();
@@ -444,14 +444,14 @@ namespace rics
         textCtrlET_->ChangeValue(boost::lexical_cast<std::string>(exposureTime()));
     }
 
-	//Choose exposure value using text box
+    //Choose exposure value using text box
     void CameraPropDialog::onTxtCtrlET(wxCommandEvent& WXUNUSED(event))
     {
-		txtCtrlET();
+        txtCtrlET();
     }
 
     bool CameraPropDialog::txtCtrlET()
-	{
+    {
         double et;
 
         if (textCtrlET_->GetValue().ToDouble(&et))
@@ -472,7 +472,7 @@ namespace rics
 
             adjustCameraExposureTime();
 
-			return true;
+            return true;
         }
         else
         {
@@ -480,9 +480,9 @@ namespace rics
             .ShowModal();
             textCtrlET_->ChangeValue(boost::lexical_cast<std::string>(exposureTime()));
 
-			return false;
+            return false;
         }
-	}
+    }
 
     void CameraPropDialog::onSliderAMT(wxCommandEvent& WXUNUSED(event))
     {
@@ -502,14 +502,14 @@ namespace rics
         textCtrlAMT_->ChangeValue(boost::lexical_cast<std::string>(autoMaxTime()));
     }
 
-	//Choose exposure value using text box
+    //Choose exposure value using text box
     void CameraPropDialog::onTxtCtrlAMT(wxCommandEvent& WXUNUSED(event))
     {
-		txtCtrlAMT();
+        txtCtrlAMT();
     }
 
     bool CameraPropDialog::txtCtrlAMT()
-	{
+    {
         double amt;
 
         if (textCtrlAMT_->GetValue().ToDouble(&amt))
@@ -530,7 +530,7 @@ namespace rics
 
             adjustCameraAutoMaxTime();
 
-			return true;
+            return true;
         }
         else
         {
@@ -538,116 +538,116 @@ namespace rics
             .ShowModal();
             textCtrlAMT_->ChangeValue(boost::lexical_cast<std::string>(autoMaxTime()));
 
-			return false;
+            return false;
         }
-	}
+    }
 
     void CameraPropDialog::onCheckBoxAutoET(wxCommandEvent& WXUNUSED(event))
     {
         if (checkBoxAutoET_->IsChecked())
         {
-			setAutoET(true);
+            setAutoET(true);
             adjustCameraExposureTime();//shutter speed is set automatically by the camera.
             textCtrlET_->Enable(false);
             sliderET_->Enable(false);
-			textCtrlAMT_->Enable(true);
-			sliderAMT_->Enable(true);
+            textCtrlAMT_->Enable(true);
+            sliderAMT_->Enable(true);
         }
         else
         {
-			setAutoET(false);
+            setAutoET(false);
             adjustCameraExposureTime();
             textCtrlET_->Enable(true);
             sliderET_->Enable(true);
-			textCtrlAMT_->Enable(false);
-			sliderAMT_->Enable(false);
+            textCtrlAMT_->Enable(false);
+            sliderAMT_->Enable(false);
         }
     }
 
-	//Get/Set methods ET
-	inline void CameraPropDialog::setExposureTime(double value)
-	{
-		if (!cameraSelectET_)
-		{ 
-			exposureTimes_.assign(numCameras_, value);
-		}
-		else
-		{
-			exposureTimes_[selectComboBoxET_] = value;
-		}
-	}
+    //Get/Set methods ET
+    inline void CameraPropDialog::setExposureTime(double value)
+    {
+        if (!cameraSelectET_)
+        { 
+            exposureTimes_.assign(numCameras_, value);
+        }
+        else
+        {
+            exposureTimes_[selectComboBoxET_] = value;
+        }
+    }
 
-	inline double CameraPropDialog::exposureTime() const
-	{	
-		return exposureTimes_[selectComboBoxET_];
-	}
+    inline double CameraPropDialog::exposureTime() const
+    {   
+        return exposureTimes_[selectComboBoxET_];
+    }
 
 
-	inline void CameraPropDialog::setAutoMaxTime(double value)
-	{
-		if (!cameraSelectET_)
-		{ 
-			autoMaxTimes_.assign(numCameras_, value);
-		}
-		else
-		{
-			autoMaxTimes_[selectComboBoxET_] = value;
-		}
-	}
+    inline void CameraPropDialog::setAutoMaxTime(double value)
+    {
+        if (!cameraSelectET_)
+        { 
+            autoMaxTimes_.assign(numCameras_, value);
+        }
+        else
+        {
+            autoMaxTimes_[selectComboBoxET_] = value;
+        }
+    }
 
-	inline double CameraPropDialog::autoMaxTime() const
-	{	
-		return autoMaxTimes_[selectComboBoxET_];
-	}
+    inline double CameraPropDialog::autoMaxTime() const
+    {   
+        return autoMaxTimes_[selectComboBoxET_];
+    }
 
-	inline void CameraPropDialog::setAutoET(bool value)
-	{
-		if (!cameraSelectET_)
-		{
-			autoET_.assign(numCameras_, value);
-		}
-		else
-		{
-			autoET_[selectComboBoxET_] = value;
-		}
-	}
+    inline void CameraPropDialog::setAutoET(bool value)
+    {
+        if (!cameraSelectET_)
+        {
+            autoET_.assign(numCameras_, value);
+        }
+        else
+        {
+            autoET_[selectComboBoxET_] = value;
+        }
+    }
 
-	inline bool CameraPropDialog::autoET() const
-	{	
-		return autoET_[selectComboBoxET_];
-	}
+    inline bool CameraPropDialog::autoET() const
+    {   
+        return autoET_[selectComboBoxET_];
+    }
 
-	inline void CameraPropDialog::adjustCameraExposureTime()
-	{
-		if (!cameraSelectET_)
-		{
-			//exposure time is in micros, therefore multiply by 1000
-			for (size_t i = 0; i < numCameras_; ++i)
-			{
-				(*cameras_)[i].setExposureTime(autoET(), exposureTime()*1000);
-			}
-		}
-		else
-		{
-			(*cameras_)[selectComboBoxET_].setExposureTime(autoET(), exposureTime()*1000);
-		}
-	}
+    inline void CameraPropDialog::adjustCameraExposureTime()
+    {
+        if (!cameraSelectET_)
+        {
+            //exposure time is in micros, therefore multiply by 1000
+            for (size_t i = 0; i < numCameras_; ++i)
+            {
+                (*cameras_)[i].setExposureTime(autoET(), exposureTime()*1000);
+            }
+        }
+        else
+        {
+            (*cameras_)[selectComboBoxET_].setExposureTime(autoET(), exposureTime()*1000);
+        }
+    }
 
-	inline void CameraPropDialog::adjustCameraAutoMaxTime()
-	{
-		if (!cameraSelectET_)
-		{
-			//exposure time is in micros, therefore multiply by 1000
-			for (size_t i = 0; i < numCameras_; ++i)
-			{
-				(*cameras_)[i].setAutoMaxTime(autoMaxTime()*1000);
-			}
-		}
-		else
-		{
-			(*cameras_)[selectComboBoxET_].setAutoMaxTime(autoMaxTime()*1000);
-		}
-	}
+    inline void CameraPropDialog::adjustCameraAutoMaxTime()
+    {
+        if (!cameraSelectET_)
+        {
+            //exposure time is in micros, therefore multiply by 1000
+            for (size_t i = 0; i < numCameras_; ++i)
+            {
+                (*cameras_)[i].setAutoMaxTime(autoMaxTime()*1000);
+            }
+        }
+        else
+        {
+            (*cameras_)[selectComboBoxET_].setAutoMaxTime(autoMaxTime()*1000);
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //////Gain
@@ -663,9 +663,9 @@ namespace rics
         cameraSelectSizer->SetMinSize(300, 0);
 
         checkBoxCameraSelectGain_ = new wxCheckBox(panel, ID_CheckBoxCameraSelectGain, 
-												 "Apply to camera:", wxDefaultPosition, wxDefaultSize, 0);
-		
-		wxArrayString strings;
+                                                 "Apply to camera:", wxDefaultPosition, wxDefaultSize, 0);
+        
+        wxArrayString strings;
         for (size_t i = 0; i < numCameras_; ++i)
         {
             strings.Add("Camera: " + boost::lexical_cast<std::string>((*cameras_)[i].uniqueID()));
@@ -679,10 +679,10 @@ namespace rics
                                                  strings, 
                                                  wxCB_READONLY | wxCB_SORT);
         
-		cameraSelectChoiceGain_->Disable();
-		
-		cameraSelectSizer->Add(checkBoxCameraSelectGain_, 0, wxALIGN_CENTER | wxALL, 10);
-		cameraSelectSizer->Add(cameraSelectChoiceGain_, 0, wxALIGN_CENTER | wxALL, 10);
+        cameraSelectChoiceGain_->Disable();
+        
+        cameraSelectSizer->Add(checkBoxCameraSelectGain_, 0, wxALIGN_CENTER | wxALL, 10);
+        cameraSelectSizer->Add(cameraSelectChoiceGain_, 0, wxALIGN_CENTER | wxALL, 10);
         
         //Gain
         wxStaticBox* gainBox = new wxStaticBox(panel, wxID_STATIC, wxT("Gain (dB)"));                                   
@@ -714,7 +714,7 @@ namespace rics
 
         //text showing min and max values
         wxBoxSizer* textSizer = new wxBoxSizer(wxHORIZONTAL);
-	    wxStaticText* staticText1 = new wxStaticText(panel, wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize);
+        wxStaticText* staticText1 = new wxStaticText(panel, wxID_ANY, wxT("0"), wxDefaultPosition, wxDefaultSize);
         wxStaticText* staticText2 = new wxStaticText(panel, wxID_STATIC, wxT("24"), wxDefaultPosition, wxDefaultSize);
         textSizer->Add(staticText1, 0, wxLEFT, 25);
         textSizer->Add(staticText2, 0, wxLEFT, 180);
@@ -736,30 +736,30 @@ namespace rics
 
         panel->SetSizer(panelSizer);
     }
-	
+    
     void CameraPropDialog::onCheckBoxCameraSelectGain(wxCommandEvent& WXUNUSED(event))
     {
         if (checkBoxCameraSelectGain_->IsChecked())
         {
-			cameraSelectGain_ = true;
+            cameraSelectGain_ = true;
             cameraSelectChoiceGain_->Enable(true);
         }
         else
         {
-			cameraSelectGain_ = false;
+            cameraSelectGain_ = false;
             cameraSelectChoiceGain_->Enable(false);
-			setGain(gain());
-			setAutoGain(autoGain());
-			adjustCameraGain();
+            setGain(gain());
+            setAutoGain(autoGain());
+            adjustCameraGain();
         }
     }
 
-	void CameraPropDialog::onComboBoxGain(wxCommandEvent& WXUNUSED(event))
+    void CameraPropDialog::onComboBoxGain(wxCommandEvent& WXUNUSED(event))
     {
- 		selectComboBoxGain_ = cameraSelectChoiceGain_->GetCurrentSelection();
+        selectComboBoxGain_ = cameraSelectChoiceGain_->GetCurrentSelection();
         sliderGain_->SetValue(static_cast<int>(gain()));
         textCtrlGain_->ChangeValue(boost::lexical_cast<std::string>(gain()));
-		checkBoxAutoGain_->SetValue(autoGain());
+        checkBoxAutoGain_->SetValue(autoGain());
 
         if (autoGain())
         {
@@ -783,11 +783,11 @@ namespace rics
 
     void CameraPropDialog::onTxtCtrlGain(wxCommandEvent& WXUNUSED(event))
     {
-		txtCtrlGain();
+        txtCtrlGain();
     }
 
     bool CameraPropDialog::txtCtrlGain()
-	{
+    {
         long g;
 
         if (textCtrlGain_->GetValue().ToLong(&g))
@@ -808,7 +808,7 @@ namespace rics
 
             adjustCameraGain();
 
-			return true;
+            return true;
         }
         else
         {
@@ -816,81 +816,81 @@ namespace rics
             .ShowModal();
             textCtrlGain_->ChangeValue(boost::lexical_cast<std::string>(gain()));
 
-			return false;
+            return false;
         }
-	}
+    }
 
     void CameraPropDialog::onCheckBoxAutoGain(wxCommandEvent& WXUNUSED(event))
     {
         if (checkBoxAutoGain_->IsChecked())
         {
-			setAutoGain(true);
+            setAutoGain(true);
             adjustCameraGain();//gain is set automatically by the camera.
             textCtrlGain_->Enable(false);
             sliderGain_->Enable(false);
         }
         else
         {
-			setAutoGain(false);
+            setAutoGain(false);
             adjustCameraGain();
             textCtrlGain_->Enable(true);
             sliderGain_->Enable(true);
         }
     }
 
-	//Get/Set methods Gain
-	inline void CameraPropDialog::setGain(double value)
-	{
-		if (!cameraSelectGain_)
-		{ 
-			gains_.assign(numCameras_, value);
-		}
-		else
-		{
-			gains_[selectComboBoxGain_] = value;
-		}
-	}
+    //Get/Set methods Gain
+    inline void CameraPropDialog::setGain(double value)
+    {
+        if (!cameraSelectGain_)
+        { 
+            gains_.assign(numCameras_, value);
+        }
+        else
+        {
+            gains_[selectComboBoxGain_] = value;
+        }
+    }
 
-	inline double CameraPropDialog::gain() const
-	{	
-		return gains_[selectComboBoxGain_];
-	}
+    inline double CameraPropDialog::gain() const
+    {   
+        return gains_[selectComboBoxGain_];
+    }
 
-	inline void CameraPropDialog::setAutoGain(bool value)
-	{
-		if (!cameraSelectGain_)
-		{
-			autoGain_.assign(numCameras_, value);
-		}
-		else
-		{
-			autoGain_[selectComboBoxGain_] = value;
-		}
-	}
+    inline void CameraPropDialog::setAutoGain(bool value)
+    {
+        if (!cameraSelectGain_)
+        {
+            autoGain_.assign(numCameras_, value);
+        }
+        else
+        {
+            autoGain_[selectComboBoxGain_] = value;
+        }
+    }
 
-	inline bool CameraPropDialog::autoGain() const
-	{	
-		return autoGain_[selectComboBoxGain_];
-	}
+    inline bool CameraPropDialog::autoGain() const
+    {   
+        return autoGain_[selectComboBoxGain_];
+    }
 
-	inline void CameraPropDialog::adjustCameraGain()
-	{
-		if (!cameraSelectGain_)
-		{
-			for (size_t i = 0; i < numCameras_; ++i)
-			{
-				(*cameras_)[i].setGain(autoGain(), gain());
-			}
-		}
-		else
-		{
-			(*cameras_)[selectComboBoxGain_].setGain(autoGain(), gain());
-		}
-	}
+    inline void CameraPropDialog::adjustCameraGain()
+    {
+        if (!cameraSelectGain_)
+        {
+            for (size_t i = 0; i < numCameras_; ++i)
+            {
+                (*cameras_)[i].setGain(autoGain(), gain());
+            }
+        }
+        else
+        {
+            (*cameras_)[selectComboBoxGain_].setGain(autoGain(), gain());
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
     //////White Balance
-	void CameraPropDialog::createWhiteBalancePage(wxNotebook* notebook_)
+    void CameraPropDialog::createWhiteBalancePage(wxNotebook* notebook_)
     {
         wxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
         wxPanel *panel = new wxPanel(notebook_, wxID_ANY);
@@ -902,7 +902,7 @@ namespace rics
         cameraSelectSizer->SetMinSize(300, 0);
 
         checkBoxCameraSelectWB_ = new wxCheckBox(panel, ID_CheckBoxCameraSelectWB, 
-												 "Apply to camera:", wxDefaultPosition, wxDefaultSize, 0);
+                                                 "Apply to camera:", wxDefaultPosition, wxDefaultSize, 0);
 
         wxArrayString strings;
 
@@ -920,18 +920,18 @@ namespace rics
                                                wxCB_READONLY | wxCB_SORT);
     
         cameraSelectChoiceWB_->Disable();
-		
-		cameraSelectSizer->Add(checkBoxCameraSelectWB_, 0, wxALIGN_CENTER | wxALL, 10);
-		cameraSelectSizer->Add(cameraSelectChoiceWB_, 0, wxALIGN_CENTER | wxALL, 10);
+        
+        cameraSelectSizer->Add(checkBoxCameraSelectWB_, 0, wxALIGN_CENTER | wxALL, 10);
+        cameraSelectSizer->Add(cameraSelectChoiceWB_, 0, wxALIGN_CENTER | wxALL, 10);
 
         //White balance
         wxStaticBox* staticBox = new wxStaticBox(panel, wxID_STATIC, wxT("White Balance"));
         wxStaticBoxSizer* staticBoxSizer = new wxStaticBoxSizer(staticBox, wxVERTICAL);
         staticBoxSizer->SetMinSize(300, 0);
 
-		checkBoxAutoWB_ = new wxCheckBox(panel, ID_CheckBoxWB, wxT("Auto"), wxDefaultPosition, wxDefaultSize, 0);
+        checkBoxAutoWB_ = new wxCheckBox(panel, ID_CheckBoxWB, wxT("Auto"), wxDefaultPosition, wxDefaultSize, 0);
 
-		//Red
+        //Red
         wxSizer *sliderSizerRed = new wxBoxSizer(wxHORIZONTAL);
         sliderWBRed_ = new wxSlider(panel, 
                                     ID_SliderWBRed, 
@@ -949,15 +949,15 @@ namespace rics
                                         wxSize(50,-1), 
                                         wxTE_PROCESS_ENTER);
         
-		wxBoxSizer* textSizerRedLabel = new wxBoxSizer(wxHORIZONTAL);
-		wxStaticText* staticTextRedLabel = new wxStaticText(panel, wxID_ANY, wxT("Red"), wxDefaultPosition, wxDefaultSize);
-		textSizerRedLabel->Add(staticTextRedLabel, 0, wxLEFT, 5);
+        wxBoxSizer* textSizerRedLabel = new wxBoxSizer(wxHORIZONTAL);
+        wxStaticText* staticTextRedLabel = new wxStaticText(panel, wxID_ANY, wxT("Red"), wxDefaultPosition, wxDefaultSize);
+        textSizerRedLabel->Add(staticTextRedLabel, 0, wxLEFT, 5);
 
-		sliderSizerRed->Add(textSizerRedLabel, 0, wxLEFT, 5);
-		sliderSizerRed->Add(sliderWBRed_, 0, wxLEFT, 5);
+        sliderSizerRed->Add(textSizerRedLabel, 0, wxLEFT, 5);
+        sliderSizerRed->Add(sliderWBRed_, 0, wxLEFT, 5);
         sliderSizerRed->Add(textCtrlWBRed_, 0, wxLEFT, 5);
 
-		//Blue
+        //Blue
         wxSizer *sliderSizerBlue = new wxBoxSizer(wxHORIZONTAL);
         sliderWBBlue_ = new wxSlider(panel, 
                                     ID_SliderWBBlue, 
@@ -969,74 +969,74 @@ namespace rics
                                     wxSL_HORIZONTAL | wxSL_AUTOTICKS);
         sliderWBBlue_->SetTickFreq(10, 10);
         textCtrlWBBlue_ = new wxTextCtrl(panel, 
-										ID_TxtCtrlWBBlue, 
-										boost::lexical_cast<std::string>(whiteBalance("B")), 
-										wxDefaultPosition, 
-										wxSize(50,-1), 
-										wxTE_PROCESS_ENTER);
+                                        ID_TxtCtrlWBBlue, 
+                                        boost::lexical_cast<std::string>(whiteBalance("B")), 
+                                        wxDefaultPosition, 
+                                        wxSize(50,-1), 
+                                        wxTE_PROCESS_ENTER);
         
-		wxBoxSizer* textSizerBlueLabel = new wxBoxSizer(wxHORIZONTAL);
-		wxStaticText* staticTextBlueLabel = new wxStaticText(panel, wxID_ANY, wxT("Blue"), wxDefaultPosition, wxDefaultSize);
-		textSizerBlueLabel->Add(staticTextBlueLabel, 0, wxLEFT, 5);
+        wxBoxSizer* textSizerBlueLabel = new wxBoxSizer(wxHORIZONTAL);
+        wxStaticText* staticTextBlueLabel = new wxStaticText(panel, wxID_ANY, wxT("Blue"), wxDefaultPosition, wxDefaultSize);
+        textSizerBlueLabel->Add(staticTextBlueLabel, 0, wxLEFT, 5);
 
-		sliderSizerBlue->Add(textSizerBlueLabel, 0, wxLEFT, 5);
-		sliderSizerBlue->Add(sliderWBBlue_, 0, wxLEFT, 5);
+        sliderSizerBlue->Add(textSizerBlueLabel, 0, wxLEFT, 5);
+        sliderSizerBlue->Add(sliderWBBlue_, 0, wxLEFT, 5);
         sliderSizerBlue->Add(textCtrlWBBlue_, 0, wxLEFT, 5);
 
         //text showing min and max values
         wxBoxSizer* textSizer = new wxBoxSizer(wxHORIZONTAL);
-	    wxStaticText* staticText1 = new wxStaticText(panel, wxID_ANY, wxT("80"), wxDefaultPosition, wxDefaultSize);
+        wxStaticText* staticText1 = new wxStaticText(panel, wxID_ANY, wxT("80"), wxDefaultPosition, wxDefaultSize);
         wxStaticText* staticText2 = new wxStaticText(panel, wxID_STATIC, wxT("300"), wxDefaultPosition, wxDefaultSize);
         textSizer->Add(staticText1, 0, wxLEFT, 45);
         textSizer->Add(staticText2, 0, wxLEFT, 170);
  
-		staticBoxSizer->Add(checkBoxAutoWB_, 0, wxALIGN_CENTRE_VERTICAL | wxALL, 10);
+        staticBoxSizer->Add(checkBoxAutoWB_, 0, wxALIGN_CENTRE_VERTICAL | wxALL, 10);
         staticBoxSizer->Add(sliderSizerRed, 0, wxALIGN_CENTRE_VERTICAL | wxALL, 5);
-		staticBoxSizer->Add(sliderSizerBlue, 0, wxALIGN_CENTRE_VERTICAL | wxALL, 5);
-		staticBoxSizer->Add(textSizer, 0, wxALIGN_LEFT);
+        staticBoxSizer->Add(sliderSizerBlue, 0, wxALIGN_CENTRE_VERTICAL | wxALL, 5);
+        staticBoxSizer->Add(textSizer, 0, wxALIGN_LEFT);
 
-		//Add to top level
-		panelSizer->Add(cameraSelectSizer, 
-						0,
-						wxALIGN_CENTER_HORIZONTAL|wxALL, 
-						5);
+        //Add to top level
+        panelSizer->Add(cameraSelectSizer, 
+                        0,
+                        wxALIGN_CENTER_HORIZONTAL|wxALL, 
+                        5);
 
-		panelSizer->Add(staticBoxSizer, 
-						0,
-						wxALIGN_CENTER_HORIZONTAL|wxALL, 
-						5);
+        panelSizer->Add(staticBoxSizer, 
+                        0,
+                        wxALIGN_CENTER_HORIZONTAL|wxALL, 
+                        5);
 
-		panel->SetSizer(panelSizer); 
+        panel->SetSizer(panelSizer); 
     }
 
-	
+    
     void CameraPropDialog::onCheckBoxCameraSelectWB(wxCommandEvent& WXUNUSED(event))
     {
         if (checkBoxCameraSelectWB_->IsChecked())
         {
-			cameraSelectWB_ = true;
+            cameraSelectWB_ = true;
             cameraSelectChoiceWB_->Enable(true);
         }
         else
         {
-			cameraSelectWB_ = false;
+            cameraSelectWB_ = false;
             cameraSelectChoiceWB_->Enable(false);
-			setWhiteBalance(whiteBalance("R"), "R");
-			setWhiteBalance(whiteBalance("B"), "B");
-			setAutoWB(autoWB());
-			adjustCameraWB("R");
-			adjustCameraWB("B");
+            setWhiteBalance(whiteBalance("R"), "R");
+            setWhiteBalance(whiteBalance("B"), "B");
+            setAutoWB(autoWB());
+            adjustCameraWB("R");
+            adjustCameraWB("B");
         }
     }
-	
-	void CameraPropDialog::onComboBoxWB(wxCommandEvent& WXUNUSED(event))
+    
+    void CameraPropDialog::onComboBoxWB(wxCommandEvent& WXUNUSED(event))
     {
         selectComboBoxWB_ = cameraSelectChoiceWB_->GetCurrentSelection();
         sliderWBRed_->SetValue(whiteBalance("R"));
         textCtrlWBRed_->ChangeValue(boost::lexical_cast<std::string>(whiteBalance("R")));
-		sliderWBBlue_->SetValue(whiteBalance("B"));
+        sliderWBBlue_->SetValue(whiteBalance("B"));
         textCtrlWBBlue_->ChangeValue(boost::lexical_cast<std::string>(whiteBalance("B")));
-		checkBoxAutoWB_->SetValue(autoWB());
+        checkBoxAutoWB_->SetValue(autoWB());
 
         if (autoWB())
         {
@@ -1063,10 +1063,10 @@ namespace rics
 
     void CameraPropDialog::onTxtCtrlWBRed(wxCommandEvent& WXUNUSED(event))
     {
-		txtCtrlWBRed();
+        txtCtrlWBRed();
     }
 
-	bool CameraPropDialog::txtCtrlWBRed()
+    bool CameraPropDialog::txtCtrlWBRed()
     {
         double wb;
 
@@ -1085,17 +1085,17 @@ namespace rics
             
             setWhiteBalance(wb, "R");
             sliderWBRed_->SetValue(whiteBalance("R"));
-			adjustCameraWB("R");
+            adjustCameraWB("R");
 
-			return true;
-		}
+            return true;
+        }
         else
         {
             wxMessageDialog(notebook_, "Not a number!", "White Balance Error (Red)", wxOK | wxICON_ERROR)
             .ShowModal();
             textCtrlWBRed_->ChangeValue(boost::lexical_cast<std::string>(whiteBalance("R")));
 
-			return false;
+            return false;
         }
     }
 
@@ -1108,10 +1108,10 @@ namespace rics
 
     void CameraPropDialog::onTxtCtrlWBBlue(wxCommandEvent& WXUNUSED(event))
     {
-		txtCtrlWBBlue();
+        txtCtrlWBBlue();
     }
 
-	bool CameraPropDialog::txtCtrlWBBlue()
+    bool CameraPropDialog::txtCtrlWBBlue()
     {
         double wb;
 
@@ -1132,7 +1132,7 @@ namespace rics
             sliderWBBlue_->SetValue(whiteBalance("B"));
             adjustCameraWB("B");
 
-			return true;
+            return true;
         }
         else
         {
@@ -1140,7 +1140,7 @@ namespace rics
             .ShowModal();
             textCtrlWBBlue_->ChangeValue(boost::lexical_cast<std::string>(whiteBalance("B")));
 
-			return false;
+            return false;
         }
     }
 
@@ -1149,15 +1149,15 @@ namespace rics
         if (checkBoxAutoWB_->IsChecked())
         {
             setAutoWB(true);
-			adjustCameraWB("R");//shutter speed is set automatically by the camera.
+            adjustCameraWB("R");//shutter speed is set automatically by the camera.
             textCtrlWBRed_->Enable(false);
             sliderWBRed_->Enable(false);
             textCtrlWBBlue_->Enable(false);
             sliderWBBlue_->Enable(false);
-		}
+        }
         else
         {
-			setAutoWB(false);
+            setAutoWB(false);
             adjustCameraWB("R");
             adjustCameraWB("B");
             textCtrlWBRed_->Enable(true);
@@ -1167,82 +1167,82 @@ namespace rics
         }
     }
 
-	//Get/Set methods WB
-	inline void CameraPropDialog::setWhiteBalance(double value, char* colour)
-	{
-		if (!cameraSelectWB_)
-		{ 
-			if (colour[0] == 'R')
-			{
-				whiteBalanceRed_.assign(numCameras_, value);
-			}
-			else
-			{
-				whiteBalanceBlue_.assign(numCameras_, value);
-			}
-		}
-		else
-		{
-			if (colour[0] == 'R')
-			{
-				whiteBalanceRed_[selectComboBoxWB_] = value;
-			}
-			else
-			{
-				whiteBalanceBlue_[selectComboBoxWB_] = value;
-			}
-		}
-	}
+    //Get/Set methods WB
+    inline void CameraPropDialog::setWhiteBalance(double value, char* colour)
+    {
+        if (!cameraSelectWB_)
+        { 
+            if (colour[0] == 'R')
+            {
+                whiteBalanceRed_.assign(numCameras_, value);
+            }
+            else
+            {
+                whiteBalanceBlue_.assign(numCameras_, value);
+            }
+        }
+        else
+        {
+            if (colour[0] == 'R')
+            {
+                whiteBalanceRed_[selectComboBoxWB_] = value;
+            }
+            else
+            {
+                whiteBalanceBlue_[selectComboBoxWB_] = value;
+            }
+        }
+    }
 
-	inline double CameraPropDialog::whiteBalance(char* colour) 
-	{	
-		if (colour[0] == 'R')
-		{
-			return whiteBalanceRed_[selectComboBoxWB_];
-		}
-		else
-		{
-			return whiteBalanceBlue_[selectComboBoxWB_];
-		}
-	}
+    inline double CameraPropDialog::whiteBalance(char* colour) 
+    {   
+        if (colour[0] == 'R')
+        {
+            return whiteBalanceRed_[selectComboBoxWB_];
+        }
+        else
+        {
+            return whiteBalanceBlue_[selectComboBoxWB_];
+        }
+    }
 
-	inline void CameraPropDialog::setAutoWB(bool value)
-	{
-		if (!cameraSelectWB_)
-		{
-			autoWB_.assign(numCameras_, value);
-		}
-		else
-		{
-			autoWB_[selectComboBoxWB_] = value;
-		}
-	}
+    inline void CameraPropDialog::setAutoWB(bool value)
+    {
+        if (!cameraSelectWB_)
+        {
+            autoWB_.assign(numCameras_, value);
+        }
+        else
+        {
+            autoWB_[selectComboBoxWB_] = value;
+        }
+    }
 
-	inline bool CameraPropDialog::autoWB() const
-	{	
-		return autoWB_[selectComboBoxWB_];
-	}
+    inline bool CameraPropDialog::autoWB() const
+    {   
+        return autoWB_[selectComboBoxWB_];
+    }
 
-	inline void CameraPropDialog::adjustCameraWB(char* colour)
-	{
-		if (!cameraSelectWB_)
-		{
-			//exposure time is in micros, therefore multiply by 1000
-			for (size_t i = 0; i < numCameras_; ++i)
-			{
-				(*cameras_)[i].setWhiteBalance(autoWB(), colour, whiteBalance(colour));
-			}
-		}
-		else
-		{
-			(*cameras_)[selectComboBoxWB_].setWhiteBalance(autoWB(), colour, whiteBalance(colour));
-		}
-	}
+    inline void CameraPropDialog::adjustCameraWB(char* colour)
+    {
+        if (!cameraSelectWB_)
+        {
+            //exposure time is in micros, therefore multiply by 1000
+            for (size_t i = 0; i < numCameras_; ++i)
+            {
+                (*cameras_)[i].setWhiteBalance(autoWB(), colour, whiteBalance(colour));
+            }
+        }
+        else
+        {
+            (*cameras_)[selectComboBoxWB_].setWhiteBalance(autoWB(), colour, whiteBalance(colour));
+        }
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
-	////Frame Rate
-	void CameraPropDialog::createFrameRatePage(wxNotebook* notebook_)
-	{
+    ////Frame Rate
+    void CameraPropDialog::createFrameRatePage(wxNotebook* notebook_)
+    {
         wxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
         panelFR_ = new wxPanel(notebook_, wxID_ANY);
         notebook_->AddPage(panelFR_, _T("Frame Rate"));
@@ -1250,12 +1250,12 @@ namespace rics
         wxStaticBox* frameRateSize = new wxStaticBox(panelFR_, wxID_STATIC, wxT("Frame Rate (frames/sec)"));                                   
         wxStaticBoxSizer* frameRateSizer = new wxStaticBoxSizer(frameRateSize, wxVERTICAL);
         frameRateSizer->SetMinSize(300, 0);
-		
-		//slider and text box
+        
+        //slider and text box
         wxSizer *sliderSizer = new wxBoxSizer(wxHORIZONTAL);
         sliderFR_ = new wxSlider(panelFR_,
                                 ID_SliderFR, 
-								static_cast<double>(this->frameRate()), 
+                                static_cast<double>(this->frameRate()), 
                                 1, 
                                 10, 
                                 wxDefaultPosition,
@@ -1273,7 +1273,7 @@ namespace rics
 
         //text showing min and max values
         wxBoxSizer* textSizer = new wxBoxSizer(wxHORIZONTAL);
-	    wxStaticText* staticText1 = new wxStaticText(panelFR_, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize);
+        wxStaticText* staticText1 = new wxStaticText(panelFR_, wxID_ANY, wxT("1"), wxDefaultPosition, wxDefaultSize);
         wxStaticText* staticText2 = new wxStaticText(panelFR_, wxID_STATIC, wxT("10"), wxDefaultPosition, wxDefaultSize);
         textSizer->Add(staticText1, 0, wxLEFT, 20);
         textSizer->Add(staticText2, 0, wxLEFT, 170);
@@ -1288,9 +1288,9 @@ namespace rics
                         5);
 
         panelFR_->SetSizer(panelSizer);
-	}
+    }
 
-	void CameraPropDialog::onSliderFR(wxCommandEvent& WXUNUSED(event))
+    void CameraPropDialog::onSliderFR(wxCommandEvent& WXUNUSED(event))
     {
         unsigned long fr = sliderFR_->GetValue();
         setFrameRate(fr);
@@ -1300,7 +1300,7 @@ namespace rics
 
     void CameraPropDialog::onTxtCtrlFR(wxCommandEvent& WXUNUSED(event))
     { 
-		txtCtrlFR();
+        txtCtrlFR();
     }
 
     bool CameraPropDialog::txtCtrlFR()
@@ -1321,10 +1321,10 @@ namespace rics
             }
             
             setFrameRate(static_cast<unsigned long>(fr));
-			adjustCameraFR();
+            adjustCameraFR();
             sliderFR_->SetValue(fr);
 
-			return true;
+            return true;
         }
         else
         {
@@ -1332,39 +1332,39 @@ namespace rics
             .ShowModal();
             textCtrlFR_->ChangeValue(boost::lexical_cast<std::string>(frameRate()));
 
-			return false;
+            return false;
         }
     }
 
-	//Get/Set frameRate size
-	inline void CameraPropDialog::setFrameRate(unsigned long value)
-	{
-		frameRate_ = value;
-	}
+    //Get/Set frameRate size
+    inline void CameraPropDialog::setFrameRate(unsigned long value)
+    {
+        frameRate_ = value;
+    }
 
-	inline unsigned long CameraPropDialog::frameRate() const
-	{	
-		return frameRate_;
-	}
+    inline unsigned long CameraPropDialog::frameRate() const
+    {   
+        return frameRate_;
+    }
 
-	inline void CameraPropDialog::adjustCameraFR()
-	{
+    inline void CameraPropDialog::adjustCameraFR()
+    {
         float fr = static_cast<float>(frameRate());
 
-		for (size_t i = 0; i < numCameras_; ++i)
-		{
+        for (size_t i = 0; i < numCameras_; ++i)
+        {
             if (fr > (*cameras_)[i].maxFrameRate())
             {
                 fr = (*cameras_)[i].maxFrameRate();
             }
             (*cameras_)[i].setFrameRate(fr);
-		}		
-	}
+        }       
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////
-	////Packet Size
-	void CameraPropDialog::createPacketSizePage(wxNotebook* notebook_)
-	{
+    ////Packet Size
+    void CameraPropDialog::createPacketSizePage(wxNotebook* notebook_)
+    {
         wxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
         panelPS_ = new wxPanel(notebook_, wxID_ANY);
         notebook_->AddPage(panelPS_, _T("Packet Size"));
@@ -1372,12 +1372,12 @@ namespace rics
         wxStaticBox* packetSize = new wxStaticBox(panelPS_, wxID_STATIC, wxT("Packet Size (Bytes)"));                                   
         wxStaticBoxSizer* packetSizeSizer = new wxStaticBoxSizer(packetSize, wxVERTICAL);
         packetSizeSizer->SetMinSize(300, 0);
-		
-		//slider and text box
+        
+        //slider and text box
         wxSizer *sliderSizer = new wxBoxSizer(wxHORIZONTAL);
         sliderPS_ = new wxSlider(panelPS_,
                                 ID_SliderPS, 
-								static_cast<double>(this->packetSize()), 
+                                static_cast<double>(this->packetSize()), 
                                 500, 
                                 9014, 
                                 wxDefaultPosition,
@@ -1395,7 +1395,7 @@ namespace rics
 
         //text showing min and max values
         wxBoxSizer* textSizer = new wxBoxSizer(wxHORIZONTAL);
-	    wxStaticText* staticText1 = new wxStaticText(panelPS_, wxID_ANY, wxT("500"), wxDefaultPosition, wxDefaultSize);
+        wxStaticText* staticText1 = new wxStaticText(panelPS_, wxID_ANY, wxT("500"), wxDefaultPosition, wxDefaultSize);
         wxStaticText* staticText2 = new wxStaticText(panelPS_, wxID_STATIC, wxT("9014"), wxDefaultPosition, wxDefaultSize);
         textSizer->Add(staticText1, 0, wxLEFT, 15);
         textSizer->Add(staticText2, 0, wxLEFT, 160);
@@ -1410,9 +1410,9 @@ namespace rics
                         5);
 
         panelPS_->SetSizer(panelSizer);
-	}
+    }
 
-	void CameraPropDialog::onSliderPS(wxCommandEvent& WXUNUSED(event))
+    void CameraPropDialog::onSliderPS(wxCommandEvent& WXUNUSED(event))
     {
         unsigned long ps = sliderPS_->GetValue();
         setPacketSize(ps);
@@ -1422,7 +1422,7 @@ namespace rics
 
     void CameraPropDialog::onTxtCtrlPS(wxCommandEvent& WXUNUSED(event))
     {
-		txtCtrlPS();
+        txtCtrlPS();
     }
 
     bool CameraPropDialog::txtCtrlPS()
@@ -1443,10 +1443,10 @@ namespace rics
             }
             
             setPacketSize(static_cast<unsigned long>(ps));
-			adjustCameraPS();
+            adjustCameraPS();
             sliderPS_->SetValue(ps);
 
-			return true;
+            return true;
         }
         else
         {
@@ -1454,59 +1454,59 @@ namespace rics
             .ShowModal();
             textCtrlPS_->ChangeValue(boost::lexical_cast<std::string>(packetSize()));
 
-			return false;
+            return false;
         }
     }
 
-	//Get/Set packet size
-	inline void CameraPropDialog::setPacketSize(unsigned long value)
-	{
-		packetSize_ = value;
-	}
+    //Get/Set packet size
+    inline void CameraPropDialog::setPacketSize(unsigned long value)
+    {
+        packetSize_ = value;
+    }
 
-	inline unsigned long CameraPropDialog::packetSize() const
-	{	
-		return packetSize_;
-	}
+    inline unsigned long CameraPropDialog::packetSize() const
+    {   
+        return packetSize_;
+    }
 
-	inline void CameraPropDialog::adjustCameraPS()
-	{
-		for (size_t i = 0; i < numCameras_; ++i)
-		{
-			(*cameras_)[i].adjustPacketSize(packetSize());
-		}		
-	}
+    inline void CameraPropDialog::adjustCameraPS()
+    {
+        for (size_t i = 0; i < numCameras_; ++i)
+        {
+            (*cameras_)[i].adjustPacketSize(packetSize());
+        }       
+    }
 
-	void CameraPropDialog::disablePanelPS()
-	{
-		panelPS_->Disable();
-	}
+    void CameraPropDialog::disablePanelPS()
+    {
+        panelPS_->Disable();
+    }
 
-	void CameraPropDialog::enablePanelPS()
-	{
-		panelPS_->Enable();
-	}
+    void CameraPropDialog::enablePanelPS()
+    {
+        panelPS_->Enable();
+    }
 
-	////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////
     ////Play mode
-	void CameraPropDialog::setPlay(bool play)
-	{
-		play_ = play;
+    void CameraPropDialog::setPlay(bool play)
+    {
+        play_ = play;
 
-		if (play_)
-		{
-			disablePanelPS();
-		}
-		else
-		{
-			enablePanelPS();
-		}
-	}
+        if (play_)
+        {
+            disablePanelPS();
+        }
+        else
+        {
+            enablePanelPS();
+        }
+    }
 
-	bool CameraPropDialog::play() const
-	{
-		return play_;
-	}
+    bool CameraPropDialog::play() const
+    {
+        return play_;
+    }
 
    BEGIN_EVENT_TABLE(CameraPropDialog, wxDialog)
         EVT_BUTTON(ID_OK, CameraPropDialog::onOK) 
@@ -1515,26 +1515,26 @@ namespace rics
         EVT_COMBOBOX(ID_CameraPositions, CameraPropDialog::onCameraPositions)
 
         EVT_CHECKBOX(ID_CheckBoxCameraSelectET, CameraPropDialog::onCheckBoxCameraSelectET)
-		EVT_COMBOBOX(ID_ComboBoxET, CameraPropDialog::onComboBoxET)
+        EVT_COMBOBOX(ID_ComboBoxET, CameraPropDialog::onComboBoxET)
         EVT_SLIDER(ID_SliderET, CameraPropDialog::onSliderET)
         EVT_TEXT_ENTER(ID_TxtCtrlET, CameraPropDialog::onTxtCtrlET)
-		EVT_SLIDER(ID_SliderAMT, CameraPropDialog::onSliderAMT)
+        EVT_SLIDER(ID_SliderAMT, CameraPropDialog::onSliderAMT)
         EVT_TEXT_ENTER(ID_TxtCtrlAMT, CameraPropDialog::onTxtCtrlAMT)
         EVT_CHECKBOX(ID_CheckBoxAutoET, CameraPropDialog::onCheckBoxAutoET)
         
         EVT_CHECKBOX(ID_CheckBoxCameraSelectGain, CameraPropDialog::onCheckBoxCameraSelectGain)
-		EVT_COMBOBOX(ID_ComboBoxGain, CameraPropDialog::onComboBoxGain)
+        EVT_COMBOBOX(ID_ComboBoxGain, CameraPropDialog::onComboBoxGain)
         EVT_SLIDER(ID_SliderGain, CameraPropDialog::onSliderGain)
         EVT_TEXT_ENTER(ID_TxtCtrlGain, CameraPropDialog::onTxtCtrlGain)
         EVT_CHECKBOX(ID_CheckBoxAutoGain, CameraPropDialog::onCheckBoxAutoGain)
 
         EVT_CHECKBOX(ID_CheckBoxCameraSelectWB, CameraPropDialog::onCheckBoxCameraSelectWB)
-		EVT_COMBOBOX(ID_ComboBoxWB, CameraPropDialog::onComboBoxWB)
+        EVT_COMBOBOX(ID_ComboBoxWB, CameraPropDialog::onComboBoxWB)
         EVT_SLIDER(ID_SliderWBRed, CameraPropDialog::onSliderWBRed)
         EVT_TEXT_ENTER(ID_TxtCtrlWBRed, CameraPropDialog::onTxtCtrlWBRed)
         EVT_SLIDER(ID_SliderWBBlue, CameraPropDialog::onSliderWBBlue)
         EVT_TEXT_ENTER(ID_TxtCtrlWBBlue, CameraPropDialog::onTxtCtrlWBBlue)
-		EVT_CHECKBOX(ID_CheckBoxWB, CameraPropDialog::onCheckBoxAutoWB)
+        EVT_CHECKBOX(ID_CheckBoxWB, CameraPropDialog::onCheckBoxAutoWB)
 
         EVT_SLIDER(ID_SliderFR, CameraPropDialog::onSliderFR)
         EVT_TEXT_ENTER(ID_TxtCtrlFR, CameraPropDialog::onTxtCtrlFR)

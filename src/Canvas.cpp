@@ -32,14 +32,14 @@ namespace rics
 {
 
     Canvas::Canvas(wxWindow *parent, 
-				   wxWindowID id, 
-				   const wxPoint &pos, 
-				   const wxSize &size, 
-				   Cameras* cameras, 
-				   GPS* gps, 
-				   Session* session,
-				   Database* db,
-				   NotePad* np):
+                   wxWindowID id, 
+                   const wxPoint &pos, 
+                   const wxSize &size, 
+                   Cameras* cameras, 
+                   GPS* gps, 
+                   Session* session,
+                   Database* db,
+                   NotePad* np):
     wxPanel(parent, id, pos, size),
     cameras_(cameras),
     gps_(gps),
@@ -51,61 +51,61 @@ namespace rics
     play_(false),
     createDB_(false),
     firstTime_(true),
-	latSexagesimal_("--"),
+    latSexagesimal_("--"),
     lonSexagesimal_("--"),
     bear_("--"),
-	lat_("--"),
+    lat_("--"),
     lon_("--"),
     timeStamp_("--"),
     speed_("--"),
     satellites_("--"),
     altitude_("--"),
     quality_("--"),
-	db_(db),
-	np_(np)
+    db_(db),
+    np_(np)
     {
         wxBoxSizer* topSizer = new wxBoxSizer(wxVERTICAL);
 
-		//Assigning camera names for the display panel based on their unique ID.
-		wxString cameraName[4] = {"Camera: None", "Camera: None", "Camera: None", "Camera: None"};
-		for (size_t i = 0; i < numCameras_; ++i)
-		{
-			cameraName[i] = "Camera: " + 
+        //Assigning camera names for the display panel based on their unique ID.
+        wxString cameraName[4] = {"Camera: None", "Camera: None", "Camera: None", "Camera: None"};
+        for (size_t i = 0; i < numCameras_; ++i)
+        {
+            cameraName[i] = "Camera: " + 
                             boost::lexical_cast<std::string>((*cameras_)[i].uniqueID()) + 
                             " (" + (*cameras_)[i].cameraName() + ")";
-		}
+        }
         
         //Panel where images are painted
         wxGridSizer* panelSizer = new wxGridSizer(2, 2, 0, 0); 
-		panel1_ = new ImagePanel(this, wxID_ANY, cameraName[0], wxDefaultPosition, wxSize(204, 170));
+        panel1_ = new ImagePanel(this, wxID_ANY, cameraName[0], wxDefaultPosition, wxSize(204, 170));
         panel2_ = new ImagePanel(this, wxID_ANY, cameraName[1], wxDefaultPosition, wxSize(204, 170));
         panel3_ = new ImagePanel(this, wxID_ANY, cameraName[2], wxDefaultPosition, wxSize(204, 170));
-		panel4_ = new ImagePanel(this, wxID_ANY, cameraName[3], wxDefaultPosition, wxSize(204, 170));		
-		
-		panels_.push_back(panel1_);
+        panel4_ = new ImagePanel(this, wxID_ANY, cameraName[3], wxDefaultPosition, wxSize(204, 170));       
+        
+        panels_.push_back(panel1_);
         panels_.push_back(panel2_);
         panels_.push_back(panel3_);
-		panels_.push_back(panel4_);
+        panels_.push_back(panel4_);
         panelSizer->Add(panel1_, 0, wxFIXED_MINSIZE  | wxRIGHT | wxBOTTOM, 1);
         panelSizer->Add(panel2_, 0, wxFIXED_MINSIZE);
         panelSizer->Add(panel3_, 0, wxFIXED_MINSIZE);
-		panelSizer->Add(panel4_, 0, wxFIXED_MINSIZE);
+        panelSizer->Add(panel4_, 0, wxFIXED_MINSIZE);
 
         //gps data display
         wxStaticText* gpsText = new wxStaticText(this, wxID_ANY, wxT("Current GPS Data"), wxDefaultPosition, wxDefaultSize, 0);
         gpsText->SetFont(wxFont(7, 74, 90, 90, false, wxT("Arial")));
         wxBoxSizer* gpsBoxSizer = new wxBoxSizer(wxVERTICAL);
         
-	    wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxTAB_TRAVERSAL );
-	    mainPanel->SetBackgroundColour(wxNullColour);
+        wxPanel* mainPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxTAB_TRAVERSAL );
+        mainPanel->SetBackgroundColour(wxNullColour);
         wxBoxSizer* mainBoxSizer = new wxBoxSizer(wxHORIZONTAL);
-    	
-	    wxGridSizer* leftGridSizer = new wxGridSizer(2, 2, 0, 0);
-    	
-	    wxStaticText* timeStampText = new wxStaticText(mainPanel, wxID_ANY, wxT("Time"), wxDefaultPosition, wxDefaultSize, 0);
+        
+        wxGridSizer* leftGridSizer = new wxGridSizer(2, 2, 0, 0);
+        
+        wxStaticText* timeStampText = new wxStaticText(mainPanel, wxID_ANY, wxT("Time"), wxDefaultPosition, wxDefaultSize, 0);
         timeStampText->SetFont(wxFont(7, 74, 90, 92, false, wxT("Arial")));
         timeStampValue_ = new wxStaticText(mainPanel, wxID_STATIC, wxT("00:00:00"), wxDefaultPosition, wxDefaultSize, 0);
-	    leftGridSizer->Add(timeStampText, 0, wxALL, 0);
+        leftGridSizer->Add(timeStampText, 0, wxALL, 0);
         leftGridSizer->Add(timeStampValue_, 0, wxALIGN_LEFT | wxALL, 0);
 
         wxStaticText* latitudeText = new wxStaticText(mainPanel, wxID_STATIC, wxT("Latitude"), wxDefaultPosition, wxDefaultSize, 0);
@@ -120,12 +120,12 @@ namespace rics
         leftGridSizer->Add(longitudeText, 0, wxALL, 0);
         leftGridSizer->Add(longitudeValue_, 0, wxALIGN_LEFT | wxALL, 0);
 
-		mainBoxSizer->Add(leftGridSizer, 1, wxEXPAND | wxLEFT, 0);
-    	
-	    wxBoxSizer* midBoxSizer = new wxBoxSizer(wxVERTICAL);
-	    wxPanel* midPanel = new wxPanel(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize/*, wxDOUBLE_BORDER*/);
-	    midPanel->SetBackgroundColour(wxColour(38, 111, 198));  	
-	    wxBoxSizer* panelBoxSizer = new wxBoxSizer(wxVERTICAL);
+        mainBoxSizer->Add(leftGridSizer, 1, wxEXPAND | wxLEFT, 0);
+        
+        wxBoxSizer* midBoxSizer = new wxBoxSizer(wxVERTICAL);
+        wxPanel* midPanel = new wxPanel(mainPanel, wxID_ANY, wxDefaultPosition, wxDefaultSize/*, wxDOUBLE_BORDER*/);
+        midPanel->SetBackgroundColour(wxColour(38, 111, 198));      
+        wxBoxSizer* panelBoxSizer = new wxBoxSizer(wxVERTICAL);
 
         speedValue_ = new wxStaticText(midPanel, wxID_STATIC, wxT("--"), wxDefaultPosition, wxDefaultSize, wxALIGN_LEFT);        
         speedValue_->SetFont(wxFont(20, 70, 90, 90, false, wxT("Arial")));
@@ -133,62 +133,62 @@ namespace rics
         panelBoxSizer->Add(speedValue_, 0, wxALIGN_CENTER | wxTOP, 5);
         panelBoxSizer->Add(kmhText, 0, wxALIGN_CENTER);// | wxALL, 5 );
 
-	    midPanel->SetSizer(panelBoxSizer);
-	    midPanel->Layout();
-	    panelBoxSizer->Fit(midPanel);
-	    midBoxSizer->Add(midPanel, 1, wxEXPAND, 0);
-    	
-	    mainBoxSizer->Add(midBoxSizer, 1, wxEXPAND, 0);
-    	
-	    wxGridSizer* rightGridSizer = new wxGridSizer(2, 2, 0, 0);
+        midPanel->SetSizer(panelBoxSizer);
+        midPanel->Layout();
+        panelBoxSizer->Fit(midPanel);
+        midBoxSizer->Add(midPanel, 1, wxEXPAND, 0);
+        
+        mainBoxSizer->Add(midBoxSizer, 1, wxEXPAND, 0);
+        
+        wxGridSizer* rightGridSizer = new wxGridSizer(2, 2, 0, 0);
 
-	    wxStaticText* bearText = new wxStaticText(mainPanel, wxID_ANY, wxT("Bearing"), wxDefaultPosition, wxDefaultSize, 0);
+        wxStaticText* bearText = new wxStaticText(mainPanel, wxID_ANY, wxT("Bearing"), wxDefaultPosition, wxDefaultSize, 0);
         bearText->SetFont(wxFont(7, 74, 90, 92, false, wxT("Arial")));
         bearValue_ = new wxStaticText(mainPanel, wxID_STATIC, wxT("00:00:00"), wxDefaultPosition, wxDefaultSize, 0);
-	    rightGridSizer->Add(bearText, 0, wxALL, 2);
+        rightGridSizer->Add(bearText, 0, wxALL, 2);
         rightGridSizer->Add(bearValue_, 0, wxALIGN_LEFT | wxLEFT, 5);
 
-	    wxStaticText* satText = new wxStaticText(mainPanel, wxID_ANY, wxT("Satellites"), wxDefaultPosition, wxDefaultSize, 0);
+        wxStaticText* satText = new wxStaticText(mainPanel, wxID_ANY, wxT("Satellites"), wxDefaultPosition, wxDefaultSize, 0);
         satText->SetFont(wxFont(7, 74, 90, 92, false, wxT("Arial")));
         satValue_ = new wxStaticText(mainPanel, wxID_STATIC, wxT("00:00:00"), wxDefaultPosition, wxDefaultSize, 0);
-	    rightGridSizer->Add(satText, 0, wxLEFT, 2);
+        rightGridSizer->Add(satText, 0, wxLEFT, 2);
         rightGridSizer->Add(satValue_, 0, wxALIGN_LEFT | wxLEFT, 5);
 
-	    wxStaticText* qualityText = new wxStaticText(mainPanel, wxID_ANY, wxT("Fix Quality"), wxDefaultPosition, wxDefaultSize, 0);
+        wxStaticText* qualityText = new wxStaticText(mainPanel, wxID_ANY, wxT("Fix Quality"), wxDefaultPosition, wxDefaultSize, 0);
         qualityText->SetFont(wxFont(7, 74, 90, 92, false, wxT("Arial")));
         qualityValue_ = new wxStaticText(mainPanel, wxID_STATIC, wxT("00:00:00"), wxDefaultPosition, wxDefaultSize, 0);
-	    rightGridSizer->Add(qualityText, 0, wxLEFT, 2);
+        rightGridSizer->Add(qualityText, 0, wxLEFT, 2);
         rightGridSizer->Add(qualityValue_, 0, wxALIGN_LEFT | wxLEFT, 5);
-    	
-	    mainBoxSizer->Add(rightGridSizer, 1, wxEXPAND | wxLEFT , 0);
-    	
-	    mainPanel->SetSizer(mainBoxSizer);
-	    mainPanel->Layout();
-	    mainBoxSizer->Fit(mainPanel); 
+        
+        mainBoxSizer->Add(rightGridSizer, 1, wxEXPAND | wxLEFT , 0);
+        
+        mainPanel->SetSizer(mainBoxSizer);
+        mainPanel->Layout();
+        mainBoxSizer->Fit(mainPanel); 
 
         gpsBoxSizer->Add(gpsText, 0, wxALIGN_CENTER | wxTOP, 5);
         gpsBoxSizer->Add(mainPanel, 0, wxEXPAND | wxTOP, 2);
-		gpsBoxSizer->SetMinSize(400, 85);
+        gpsBoxSizer->SetMinSize(400, 85);
         
-    	wxStaticLine* staticLine1 = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
-       	wxStaticLine* staticLine2 = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
+        wxStaticLine* staticLine1 = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
+        wxStaticLine* staticLine2 = new wxStaticLine(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
 
         //text Note Pad
         wxStaticText* npText = new wxStaticText(this, wxID_ANY, wxT("Note Pad"), wxDefaultPosition, wxDefaultSize, 0);
         npText->SetFont(wxFont(8, 74, 90, 90, false, wxT("Arial")));
         wxPanel* textPanel = new wxPanel(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSUNKEN_BORDER | wxTAB_TRAVERSAL);
-		wxBoxSizer* textPanelSizer = new wxBoxSizer(wxVERTICAL);
-		np_->create(textPanel, 
+        wxBoxSizer* textPanelSizer = new wxBoxSizer(wxVERTICAL);
+        np_->create(textPanel, 
                     ID_NotePad, 
                     session_, 
                     &formatTime_, 
                     &lat_, 
                     &lon_,
-					&bear_,
+                    &bear_,
                     wxEmptyString, 
                     wxDefaultPosition, 
-					wxSize(400, 102),
-				    wxTE_MULTILINE | wxTE_PROCESS_ENTER | wxNO_BORDER | wxHSCROLL);
+                    wxSize(400, 102),
+                    wxTE_MULTILINE | wxTE_PROCESS_ENTER | wxNO_BORDER | wxHSCROLL);
         textPanelSizer->Add(np_, 0, wxEXPAND, 5);
         textPanel->SetSizer(textPanelSizer);
         
@@ -209,12 +209,12 @@ namespace rics
 
         gpsData_ = SharedGPSDataPtr(new SharedGPSData());
 
-	    //GPS thread creation and Run.
-		GPSThread* gpsThread = new GPSThread(this, gps_, gpsData_);
+        //GPS thread creation and Run.
+        GPSThread* gpsThread = new GPSThread(this, gps_, gpsData_);
         wxThreadError threadError = gpsThread->Create();
         assert(threadError == wxTHREAD_NO_ERROR);
         *gpsThread_ = gpsThread;
-		(*gpsThread_)->Run();
+        (*gpsThread_)->Run();
     }
 
     Canvas::~Canvas()
@@ -234,16 +234,16 @@ namespace rics
     }
 
     //Delete the GPS thread.
-	inline void Canvas::deleteGPSThread()
-	{
-		(*gpsThread_)->Delete();
-	}
+    inline void Canvas::deleteGPSThread()
+    {
+        (*gpsThread_)->Delete();
+    }
 
-	void Canvas::deleteAllThreads()
-	{
-		deleteCameraThreads();
-		deleteGPSThread();
-	}
+    void Canvas::deleteAllThreads()
+    {
+        deleteCameraThreads();
+        deleteGPSThread();
+    }
 
     //Refresh GUI image from streamed cameras and write GPS data to database
     void Canvas::onCameraEvent(wxCommandEvent& event)
@@ -253,7 +253,7 @@ namespace rics
         {
             wxString cameraName = (*cameras_)[event.GetInt()].cameraName();
             wxString cameraID = boost::lexical_cast<std::string>((*cameras_)[event.GetInt()].uniqueID());
-			db_->databaseEnterData(cameraName, 
+            db_->databaseEnterData(cameraName, 
                                    event.GetExtraLong(),
                                    timeStamp_, 
                                    lat_, 
@@ -268,7 +268,7 @@ namespace rics
         cameraBuffers_[event.GetInt()]->readLock();
         UCArray bmpBuffer = cameraBuffers_[event.GetInt()]->data();
         wxImage image(204, 170, (unsigned char*)bmpBuffer.get(), true);
-		panels_[event.GetInt()]->refreshImage(wxBitmap(image));
+        panels_[event.GetInt()]->refreshImage(wxBitmap(image));
         cameraBuffers_[event.GetInt()]->readUnlock();
     }
 
@@ -279,12 +279,12 @@ namespace rics
 
         lat_ = gpsData_->latitude();
         latSexagesimal_ = gpsData_->latSexagesimal();
-		lon_ = gpsData_->longitude();
-		lonSexagesimal_ = gpsData_->lonSexagesimal();
+        lon_ = gpsData_->longitude();
+        lonSexagesimal_ = gpsData_->lonSexagesimal();
         bear_ = gpsData_->bearing();
         timeStamp_ = gpsData_->timeStamp();
-		formatTime_ = gpsData_->formatTime();
-		speed_ = gpsData_->speed();
+        formatTime_ = gpsData_->formatTime();
+        speed_ = gpsData_->speed();
         satellites_ = gpsData_->satellites();
         quality_ = gpsData_->quality();
         
@@ -307,18 +307,18 @@ namespace rics
     {        
         if (!play_)
         {
-		    if (!gps_->gpsActive() && session_->createDB())
-		    {
-			    wxMessageDialog(this, "No GPS data detected. Check COM port setting", "RICS GPS Error", wxOK | wxICON_ERROR)
-			    .ShowModal() ;
-			    return false;
-		    }
-    		
-		    if (session_->sessionNameIsEmpty() && (session_->saveImages() || session_->createDB()))//allows preview also
+            if (!gps_->gpsActive() && session_->createDB())
+            {
+                wxMessageDialog(this, "No GPS data detected. Check COM port setting", "RICS GPS Error", wxOK | wxICON_ERROR)
+                .ShowModal() ;
+                return false;
+            }
+            
+            if (session_->sessionNameIsEmpty() && (session_->saveImages() || session_->createDB()))//allows preview also
             {
                 wxMessageDialog(this, "Your session requires a unique name. Please create a new session with a unique name.",
                 "RICS", wxICON_EXCLAMATION)
-			    .ShowModal();
+                .ShowModal();
                 return false;
             }
             
@@ -369,12 +369,12 @@ namespace rics
     ////////Camera Names
     void Canvas::setCameraNames()
     {
-		for (size_t i = 0; i < numCameras_; ++i)
-		{
-			panels_[i]->setCameraName("Camera: " + 
+        for (size_t i = 0; i < numCameras_; ++i)
+        {
+            panels_[i]->setCameraName("Camera: " + 
                                       boost::lexical_cast<std::string>((*cameras_)[i].uniqueID()) + 
                                       " (" + (*cameras_)[i].cameraName() + ")");
-		}        
+        }        
     }
 
    BEGIN_EVENT_TABLE(Canvas, wxPanel)

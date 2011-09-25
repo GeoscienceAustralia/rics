@@ -30,106 +30,106 @@ along with RICS.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace rics
 {
-	class NMEAParser  
-	{
-	public:
-		typedef enum
-		{
-		  NONE,
-		  RMC,
-		  GGA,
-		} SentenceType;
+    class NMEAParser  
+    {
+    public:
+        typedef enum
+        {
+          NONE,
+          RMC,
+          GGA,
+        } SentenceType;
 
-	public:
-		NMEAParser();
-		~NMEAParser();
+    public:
+        NMEAParser();
+        ~NMEAParser();
 
-		void parse(const unsigned char *nmeaBuf, const int bufSize);
+        void parse(const unsigned char *nmeaBuf, const int bufSize);
 
-		wxString time()
-		{
-			return time_.BeforeFirst('.');
-		}
+        wxString time()
+        {
+            return time_.BeforeFirst('.');
+        }
 
-		double latitute()
-		{
-			return lat_;
-		}
+        double latitute()
+        {
+            return lat_;
+        }
 
-		double longitude()
-		{
-			return lon_;
-		}
+        double longitude()
+        {
+            return lon_;
+        }
 
-		double quality()
-		{
-			return quality_;
-		}
+        double quality()
+        {
+            return quality_;
+        }
 
-		long satellites()
-		{
-			return sats_;
-		}
+        long satellites()
+        {
+            return sats_;
+        }
 
-		double speed()
-		{
-			return speed_ * 1.852; //Speed in kmph, it's originally in knots.
-		}
+        double speed()
+        {
+            return speed_ * 1.852; //Speed in kmph, it's originally in knots.
+        }
 
-		double bearing()
-		{
-			return bearing_;
-		}
+        double bearing()
+        {
+            return bearing_;
+        }
 
-		wxString date()
-		{
-			return date_;
-		}
+        wxString date()
+        {
+            return date_;
+        }
 
-		SentenceType sentenceType()
-		{
-			return sentenceType_;
-		}	
+        SentenceType sentenceType()
+        {
+            return sentenceType_;
+        }   
 
-		void printGPRMC()
-		{
-			std::cout << "Speed: " << speed() << std::endl;
-			std::cout << "Bearing: " << bearing() << std::endl << std::endl;
-		}
+        void printGPRMC()
+        {
+            std::cout << "Speed: " << speed() << std::endl;
+            std::cout << "Bearing: " << bearing() << std::endl << std::endl;
+        }
 
-		void printGPGGA()
-		{
-			std::cout << "Time: " << time() << std::endl;
-			std::cout << "Latitude: " << latitute() 
-					  << ", Longitude: "
-					  << longitude() 
-					  << std::endl;
-			std::cout << "Quality: " << quality() << std::endl;
-			std::cout << "Satellites: " << satellites() << std::endl << std::endl ;
-		}
+        void printGPGGA()
+        {
+            std::cout << "Time: " << time() << std::endl;
+            std::cout << "Latitude: " << latitute() 
+                      << ", Longitude: "
+                      << longitude() 
+                      << std::endl;
+            std::cout << "Quality: " << quality() << std::endl;
+            std::cout << "Satellites: " << satellites() << std::endl << std::endl ;
+        }
 
 
 
-	private:
-		void processGPGGA();
-		void processGPRMC();
+    private:
+        void processGPGGA();
+        void processGPRMC();
 
-	public:
+    public:
 
-	private:
-		wxString nmeaString_;
-		
-		wxString time_;
-		double lat_;
-		double lon_;
-		long quality_;
-		long sats_;
-		double speed_;
-		double bearing_;
-		wxString date_;
-		SentenceType sentenceType_;
-		bool checksumRMCPass_;
-		bool checksumGGAPass_;
-	};
+    private:
+        wxString nmeaString_;
+        
+        wxString time_;
+        double lat_;
+        double lon_;
+        long quality_;
+        long sats_;
+        double speed_;
+        double bearing_;
+        wxString date_;
+        SentenceType sentenceType_;
+        bool checksumRMCPass_;
+        bool checksumGGAPass_;
+    };
 }
 #endif 

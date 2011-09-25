@@ -31,39 +31,39 @@ along with RICS.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace rics
 {
-	static long int countFrames;
+    static long int countFrames;
     static int callbackCount(void* maxFrame, int argc, char **argv, char **azColName)
     {  
         countFrames = boost::lexical_cast<long int>(argv[0] ? argv[0] : "NULL");
         return 0;
     }
 
-	class Database
-	{
-	public:
-		Database();
-		~Database();
-		
-		void openDatabase(const wxString& filename);
-		void createTable(const wxString& table);
-		void databaseEnterData(const wxString& table,
+    class Database
+    {
+    public:
+        Database();
+        ~Database();
+        
+        void openDatabase(const wxString& filename);
+        void createTable(const wxString& table);
+        void databaseEnterData(const wxString& table,
                                long frame, 
-							   wxString& timeStamp,
-							   wxString& lat,
-							   wxString& lon,
-							   wxString& speed,
+                               wxString& timeStamp,
+                               wxString& lat,
+                               wxString& lon,
+                               wxString& speed,
                                wxString& bearing,
                                wxString& satellites,
                                wxString& fixQuality,
                                wxString& cameraID);
-		long int maxFrame(const wxString& table);
-		void beginTransaction();
-		void endTransaction();
-		void databaseClose();
+        long int maxFrame(const wxString& table);
+        void beginTransaction();
+        void endTransaction();
+        void databaseClose();
 
-	private:
-		sqlite3 *db_;
-	};
+    private:
+        sqlite3 *db_;
+    };
 
     typedef boost::shared_array<wxString> TableNames;
 

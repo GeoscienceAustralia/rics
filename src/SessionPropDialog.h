@@ -41,11 +41,11 @@ namespace rics
     {
     public:
         SessionPropDialog(Frame *frame, 
-						  const wxString &title, 
-						  Session* session, 
-						  Cameras* cameras, 
-						  Database* db,
-						  GPS* gps);
+                          const wxString &title, 
+                          Session* session, 
+                          Cameras* cameras, 
+                          Database* db,
+                          GPS* gps);
         ~SessionPropDialog();
 
     private:
@@ -59,21 +59,21 @@ namespace rics
         bool checkDuplicateCameraNames();
 
         inline Camera& camera(size_t i) const;
-	
-	private:
+    
+    private:
         Frame* frame_;
         Session* session_;
-		Cameras* cameras_;
-		Database* db_;
-		GPS* gps_;
-		size_t numCameras_;
+        Cameras* cameras_;
+        Database* db_;
+        GPS* gps_;
+        size_t numCameras_;
 
         wxStaticBoxSizer* sessionNameSizer_;
 
         wxButton* okButton_;
 
         wxTextCtrl* textCtrlSN_;
-		wxCheckBox* checkBoxSN_;
+        wxCheckBox* checkBoxSN_;
         wxTextCtrl* textCtrlLoc_;
 
         wxDirPickerCtrl directory_;

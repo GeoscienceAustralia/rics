@@ -27,8 +27,8 @@ along with RICS.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace rics
 {
-	GPS::GPS():
-	currentPort_(0),
+    GPS::GPS():
+    currentPort_(0),
     gpsActive_(false),
     bearing_(0)
     {
@@ -42,86 +42,86 @@ namespace rics
     //Open COM port for GPS receiver
     bool GPS::openPort(int portNumber)
     {
-		setCurrentPort(portNumber);
-		wxString port = "COM" + boost::lexical_cast<std::string>(portNumber);
+        setCurrentPort(portNumber);
+        wxString port = "COM" + boost::lexical_cast<std::string>(portNumber);
 
-		long error = serial_.Open(port, 0, 0, false);
-		if (error != ERROR_SUCCESS)//Could not open
-		{
-			return false;
-		}
+        long error = serial_.Open(port, 0, 0, false);
+        if (error != ERROR_SUCCESS)//Could not open
+        {
+            return false;
+        }
 
         //Current COM port defaults. These could be moved to the GUI as user set options.
-		error = serial_.Setup(CSerial::EBaud4800, 
-					     	  CSerial::EData8, 
-							  CSerial::EParNone, 
-							  CSerial::EStop1);
-		if (error != ERROR_SUCCESS)
-		{
-			return false;
-		}
+        error = serial_.Setup(CSerial::EBaud4800, 
+                              CSerial::EData8, 
+                              CSerial::EParNone, 
+                              CSerial::EStop1);
+        if (error != ERROR_SUCCESS)
+        {
+            return false;
+        }
 
-		// Use 'non-blocking' reads, because we don't know how many bytes
-		// will be received. This is normally the most convenient mode
-		// (and also the default mode for reading data).
-		error = serial_.SetupReadTimeouts(CSerial::EReadTimeoutNonblocking);
-		if (error != ERROR_SUCCESS)
-		{
-			return false;
-		}
+        // Use 'non-blocking' reads, because we don't know how many bytes
+        // will be received. This is normally the most convenient mode
+        // (and also the default mode for reading data).
+        error = serial_.SetupReadTimeouts(CSerial::EReadTimeoutNonblocking);
+        if (error != ERROR_SUCCESS)
+        {
+            return false;
+        }
 
-		return true;
+        return true;
     }
 
-	void GPS::setCurrentPort(int port)
-	{
-		currentPort_ = port;
-	}
-	
-	int GPS::currentPort()
-	{
-		return currentPort_;
-	}
+    void GPS::setCurrentPort(int port)
+    {
+        currentPort_ = port;
+    }
+    
+    int GPS::currentPort()
+    {
+        return currentPort_;
+    }
 
     //Close the COM port.
-	void GPS::close()
-	{
-		serial_.Close();
-	}
+    void GPS::close()
+    {
+        serial_.Close();
+    }
 
-	//Currently not in use as WaitEvent() hangs if 
-	//COM port can be opened but there is no data.
-	int GPS::bytesReceived()
-	{
-		long error = serial_.WaitEvent();
-		if (error != ERROR_SUCCESS)
-		{
-			return false;
-		}
+    //Currently not in use as WaitEvent() hangs if 
+    //COM port can be opened but there is no data.
+    int GPS::bytesReceived()
+    {
+        long error = serial_.WaitEvent();
+        if (error != ERROR_SUCCESS)
+        {
+            return false;
+        }
 
-		// Save event
-		const CSerial::EEvent eEvent = serial_.GetEventType();
+        // Save event
+        const CSerial::EEvent eEvent = serial_.GetEventType();
 
-		// Handle break event
-		if (eEvent & CSerial::EEventBreak)
-		{
-			return false;
-		}
-		// Handle error event
-		else if (eEvent & CSerial::EEventError)
-		{
-			return false;
-		}
-		// If received, return true
-		else if (eEvent & CSerial::EEventRecv)
-		{
-			return true;
-		}
-		else //some other issue
-		{
-			return false;
-		}
-	}
+        // Handle break event
+        if (eEvent & CSerial::EEventBreak)
+        {
+            return false;
+        }
+        // Handle error event
+        else if (eEvent & CSerial::EEventError)
+        {
+            return false;
+        }
+        // If received, return true
+        else if (eEvent & CSerial::EEventRecv)
+        {
+            return true;
+        }
+        else //some other issue
+        {
+            return false;
+        }
+    }
     
     //Has GPS been successfully detected?
     void GPS::setGPSActive(bool active)
@@ -135,101 +135,101 @@ namespace rics
     }
 
     //Read GPS buffer.
-	bool GPS::readBuffer(unsigned char* buffer, 
-						 const int bufSize, 
-						 unsigned long* bytesRead)
-	{
-		long error = serial_.Read((void *)buffer, bufSize, bytesRead);
-				
-		if (error == ERROR_SUCCESS)
-		{
-			return false;
-		}
+    bool GPS::readBuffer(unsigned char* buffer, 
+                         const int bufSize, 
+                         unsigned long* bytesRead)
+    {
+        long error = serial_.Read((void *)buffer, bufSize, bytesRead);
+                
+        if (error == ERROR_SUCCESS)
+        {
+            return false;
+        }
 
-		return true;
-	}
+        return true;
+    }
 
     //Send current buffer to NMEA parser.
-	void GPS::parse(const unsigned char *buffer, const int bufSize)
-	{
-		nmeaParser_.parse(buffer, bufSize);
-	}
+    void GPS::parse(const unsigned char *buffer, const int bufSize)
+    {
+        nmeaParser_.parse(buffer, bufSize);
+    }
 
     //Return current latitude in degrees.
     wxString GPS::latitude()
     {
         double gpsLat = nmeaParser_.latitute();
 
-		int degs = (int)(gpsLat/100.0f);
-		double lat = degs + (gpsLat - 100.0f*degs)/60.0f;
+        int degs = (int)(gpsLat/100.0f);
+        double lat = degs + (gpsLat - 100.0f*degs)/60.0f;
 
         wxString s;
         s.Printf("%.6f", lat);
-        return s;	
+        return s;   
     }
 
     //Return current longitude in degrees.
     wxString GPS::longitude()
     {
         double gpsLon = nmeaParser_.longitude();
-		int deg = (int)(gpsLon/100.0f);
-		double lon = deg + (gpsLon - 100.0f*deg)/60.0f;
-		
+        int deg = (int)(gpsLon/100.0f);
+        double lon = deg + (gpsLon - 100.0f*deg)/60.0f;
+        
         wxString s;
         s.Printf("%.6f", lon);
         return s;
     }
 
     //Return current latitude in formatted degrees, minutes and seconds format.
-	wxString GPS::latSexagesimal()
-	{
-		double gpsLat = nmeaParser_.latitute(); 
-		int deg = (int)(gpsLat/100.0f);
-		int min = (int)(gpsLat - deg*100);
-		int sec = 60*(gpsLat - (int)gpsLat);
+    wxString GPS::latSexagesimal()
+    {
+        double gpsLat = nmeaParser_.latitute(); 
+        int deg = (int)(gpsLat/100.0f);
+        int min = (int)(gpsLat - deg*100);
+        int sec = 60*(gpsLat - (int)gpsLat);
 
-		if (gpsLat >= 0)
-		{
-			return boost::lexical_cast<std::string>(deg) + wxString((wxChar)(-80)) + " " +
-				   boost::lexical_cast<std::string>(min) + "' " +
-				   boost::lexical_cast<std::string>(sec) + "'' N";
-		}
-		else
-		{
-			return boost::lexical_cast<std::string>(-deg) + wxString((wxChar)(-80)) + " " +
-				   boost::lexical_cast<std::string>(-min) + "' " +
-				   boost::lexical_cast<std::string>(-sec) + "'' S";
-		}
-	}
+        if (gpsLat >= 0)
+        {
+            return boost::lexical_cast<std::string>(deg) + wxString((wxChar)(-80)) + " " +
+                   boost::lexical_cast<std::string>(min) + "' " +
+                   boost::lexical_cast<std::string>(sec) + "'' N";
+        }
+        else
+        {
+            return boost::lexical_cast<std::string>(-deg) + wxString((wxChar)(-80)) + " " +
+                   boost::lexical_cast<std::string>(-min) + "' " +
+                   boost::lexical_cast<std::string>(-sec) + "'' S";
+        }
+    }
 
     //Return current longitude in formatted degrees, minutes and seconds format.
-	wxString GPS::lonSexagesimal()
-	{
-		double gpsLon = nmeaParser_.longitude(); 
-		int deg = (int)(gpsLon/100.0f);
-		int min = (int)(gpsLon - deg*100);
-		int sec = 60*(gpsLon - (int)gpsLon);
+    wxString GPS::lonSexagesimal()
+    {
+        double gpsLon = nmeaParser_.longitude(); 
+        int deg = (int)(gpsLon/100.0f);
+        int min = (int)(gpsLon - deg*100);
+        int sec = 60*(gpsLon - (int)gpsLon);
 
-		if (gpsLon >= 0)
-		{	//((wxChar)(-80) is superscript o.
-			return boost::lexical_cast<std::string>(deg) + wxString((wxChar)(-80)) + " " +
-				   boost::lexical_cast<std::string>(min) + "' " +
-				   boost::lexical_cast<std::string>(sec) + "'' E";
-		}
-		else
-		{
-			return boost::lexical_cast<std::string>(-deg) + wxString((wxChar)(-80)) + " " +
-				   boost::lexical_cast<std::string>(-min) + "' " +
-				   boost::lexical_cast<std::string>(-sec) + "'' W";
-		}
-	}
+        if (gpsLon >= 0)
+        {   //((wxChar)(-80) is superscript o.
+            return boost::lexical_cast<std::string>(deg) + wxString((wxChar)(-80)) + " " +
+                   boost::lexical_cast<std::string>(min) + "' " +
+                   boost::lexical_cast<std::string>(sec) + "'' E";
+        }
+        else
+        {
+            return boost::lexical_cast<std::string>(-deg) + wxString((wxChar)(-80)) + " " +
+                   boost::lexical_cast<std::string>(-min) + "' " +
+                   boost::lexical_cast<std::string>(-sec) + "'' W";
+        }
+    }
 
     //Return current bearing or "heading".
     wxString GPS::bearing()
     {
-		double bearing = nmeaParser_.bearing();
+        double bearing = nmeaParser_.bearing();
         wxString b;
-		b.Printf("%.1f", bearing);
+        b.Printf("%.1f", bearing);
         return b;
     }
 
@@ -246,12 +246,12 @@ namespace rics
     }
 
     //Re-format the timestamp for display.
-	wxString GPS::formatTime()
-	{
+    wxString GPS::formatTime()
+    {
         wxString ts = timeStamp();
-		wxString utcTime;
-		
-		switch (ts.Len()) 
+        wxString utcTime;
+        
+        switch (ts.Len()) 
         {
         case 1:
             utcTime = "00:00:0" + ts;
@@ -276,8 +276,8 @@ namespace rics
             break;
         }
 
-		return utcTime;
-	}
+        return utcTime;
+    }
 
     wxString GPS::date()
     {
@@ -286,9 +286,9 @@ namespace rics
 
     wxString GPS::speed()
     {
-		double speed = nmeaParser_.speed();
+        double speed = nmeaParser_.speed();
         wxString s;
-		s.Printf("%.1f", speed);
+        s.Printf("%.1f", speed);
         return s;
     }
 
@@ -301,22 +301,22 @@ namespace rics
     //Return the number of satellites picked up by the GPS receiver.
     wxString GPS::satellites()
     {
-		long sats = nmeaParser_.satellites();
+        long sats = nmeaParser_.satellites();
         return boost::lexical_cast<std::string>(sats);
     }
 
     //Return the fix quality of the GPS receiver.
     wxString GPS::quality()
     {
-		long quality = nmeaParser_.quality();
+        long quality = nmeaParser_.quality();
         return boost::lexical_cast<std::string>(quality);
     }
 
-	NMEAParser::SentenceType GPS::sentenceType()
+    NMEAParser::SentenceType GPS::sentenceType()
     {
         if (!gpsActive())
         {
-			return NMEAParser::NONE;
+            return NMEAParser::NONE;
         }
 
         return nmeaParser_.sentenceType();

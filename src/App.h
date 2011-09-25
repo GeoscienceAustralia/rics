@@ -42,16 +42,16 @@ namespace rics
 
         void closeApp();
 
-	private:
+    private:
         virtual bool OnInit();
         void initCameraHandlersUniqueID();
         void initCameraHandlersIP();
 
     private:
         unsigned long numCams_;
-		std::vector<tPvHandle> hCamera_;
+        std::vector<tPvHandle> hCamera_;
         Cameras cameras_;
-		static const unsigned long maxStreamBytesPerSecond_ = 120000000;
+        static const unsigned long maxStreamBytesPerSecond_ = 120000000;
 
         const wxString name_;
         boost::shared_ptr<wxSingleInstanceChecker> instanceChecker_;
