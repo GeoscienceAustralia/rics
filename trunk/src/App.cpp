@@ -55,12 +55,12 @@ namespace rics
         //uninitialise the cameras
         for (unsigned long i = 0; i < numCams_; ++i)
         {
-			tPvErr returnCode = PvCameraClose(hCamera_[i]);
+            tPvErr returnCode = PvCameraClose(hCamera_[i]);
             assert(!returnCode);
         }
         
         PvLinkCallbackUnRegister(CameraEventCB, ePvLinkRemove);
-		PvUnInitialize();
+        PvUnInitialize();
     }
 
     bool App::OnInit()
@@ -72,55 +72,55 @@ namespace rics
             return false;
         }
         
-		//Initialise API
+        //Initialise API
         if(!PvInitialize())
-		{        
+        {        
             PvLinkCallbackRegister(CameraEventCB, ePvLinkRemove, this);
-			
+            
             initCameraHandlersUniqueID();
 
-			//Abort if no cameras attached
-			if (!numCams_)
-			{
-				wxLogError(_("No cameras attached, aborting."));
-				return false; 
-			}
+            //Abort if no cameras attached
+            if (!numCams_)
+            {
+                wxLogError(_("No cameras attached, aborting."));
+                return false; 
+            }
 
             if (numCams_ > 4)
-			{
-				wxLogError(_("More than 4 cameras attached, aborting."));
-				return false; 
-			}
+            {
+                wxLogError(_("More than 4 cameras attached, aborting."));
+                return false; 
+            }
 
             //Calculate the stream bytes per second per camera
-			unsigned long streamBytesPerSecond = maxStreamBytesPerSecond_/numCams_;
-	        
+            unsigned long streamBytesPerSecond = maxStreamBytesPerSecond_/numCams_;
+            
             //Initialise the cameras
-			for (unsigned long i = 0; i < numCams_; ++i)
-			{
-				cameras_.push_back(Camera(hCamera_[i], streamBytesPerSecond));
-			}
+            for (unsigned long i = 0; i < numCams_; ++i)
+            {
+                cameras_.push_back(Camera(hCamera_[i], streamBytesPerSecond));
+            }
 
             wxInitAllImageHandlers();
 
-			//wxSize frameSize(619, 953); 
-			wxSize frameSize(420, 720);//This is the size of the GUI
+            //wxSize frameSize(619, 953); 
+            wxSize frameSize(420, 720);//This is the size of the GUI
             frame_ = new Frame(_T("RICS (Test Mode)"), 
                                wxDefaultPosition, 
                                frameSize, 
                                &cameras_);
-			frame_->SetSizeHints(frameSize, frameSize);
+            frame_->SetSizeHints(frameSize, frameSize);
             frame_->Layout();
             frame_->SetIcon(wxIcon("aaaa"));
-			frame_->Show(TRUE);
+            frame_->Show(TRUE);
 
-			return TRUE;
-		}
-		else
-		{
-			wxLogError(_("Failed to initialise the API, aborting."));
-			return false;
-		}
+            return TRUE;
+        }
+        else
+        {
+            wxLogError(_("Failed to initialise the API, aborting."));
+            return false;
+        }
     }
 
     void App::closeApp()
@@ -128,7 +128,7 @@ namespace rics
         frame_->unpluggedClose();
     }
 
-	//This method searches for cameras that are attached to the computer and opens those.
+    //This method searches for cameras that are attached to the computer and opens those.
     //This is preferred as it does not rely on any prior knowledge (ie IP addresses)
     //of the cameras.
     void App::initCameraHandlersUniqueID()
@@ -159,41 +159,41 @@ namespace rics
         {
             PvCameraOpen(cams1[i].UniqueId, ePvAccessMaster, &handle);
             hCamera_.push_back(handle);
-			numCams_++;
+            numCams_++;
         }
     }
 
     //This method opens the cameras using their IP address. The drawback of this
     //method is that the camera's IP addresses need to be set before use.
-	void App::initCameraHandlersIP()
+    void App::initCameraHandlersIP()
     {     
-		//The IP address of the cameras must be set to 169.254.1.x where x is in the range 
-		//2 - 5. GigEPIConfig should be used to set the IP addresses.
-		tPvHandle handle;
-		
-		if (!PvCameraOpenByAddr(inet_addr("169.254.1.2"), ePvAccessMaster, &handle))//Unique ID = 53044
-		{
-			hCamera_.push_back(handle);
-			numCams_++;
-		}
-		
-		if (!PvCameraOpenByAddr(inet_addr("169.254.1.3"), ePvAccessMaster, &handle))//Unique ID = 53045/
-		{
-			hCamera_.push_back(handle);
-			numCams_++;
-		}
-		
-		if (!PvCameraOpenByAddr(inet_addr("169.254.1.4"), ePvAccessMaster, &handle))//Unique ID = 53046
-		{
-			hCamera_.push_back(handle);
-			numCams_++;
-		}
+        //The IP address of the cameras must be set to 169.254.1.x where x is in the range 
+        //2 - 5. GigEPIConfig should be used to set the IP addresses.
+        tPvHandle handle;
+        
+        if (!PvCameraOpenByAddr(inet_addr("169.254.1.2"), ePvAccessMaster, &handle))//Unique ID = 53044
+        {
+            hCamera_.push_back(handle);
+            numCams_++;
+        }
+        
+        if (!PvCameraOpenByAddr(inet_addr("169.254.1.3"), ePvAccessMaster, &handle))//Unique ID = 53045/
+        {
+            hCamera_.push_back(handle);
+            numCams_++;
+        }
+        
+        if (!PvCameraOpenByAddr(inet_addr("169.254.1.4"), ePvAccessMaster, &handle))//Unique ID = 53046
+        {
+            hCamera_.push_back(handle);
+            numCams_++;
+        }
 
         if (!PvCameraOpenByAddr(inet_addr("169.254.1.5"), ePvAccessMaster, &handle))//Unique ID = 53086
-		{
-			hCamera_.push_back(handle);
-			numCams_++;
-		}
+        {
+            hCamera_.push_back(handle);
+            numCams_++;
+        }
     }
 
     //This callback function is called when the camera is unplugged.

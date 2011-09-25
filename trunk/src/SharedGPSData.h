@@ -75,15 +75,15 @@ namespace rics
             return latitude_;
         }
 
-		void setLatSexagesimal(const wxString& ls)
-		{
-			latSexagesimal_ = ls;
-		}
-		
-		wxString latSexagesimal() const
-		{
-			return latSexagesimal_;
-		}
+        void setLatSexagesimal(const wxString& ls)
+        {
+            latSexagesimal_ = ls;
+        }
+        
+        wxString latSexagesimal() const
+        {
+            return latSexagesimal_;
+        }
 
         void setLongitude(const wxString& lon)
         {
@@ -95,15 +95,15 @@ namespace rics
             return longitude_;
         }
 
-		void setLonSexagesimal(const wxString& ls)
-		{
-			lonSexagesimal_ = ls;
-		}
-		
-		wxString lonSexagesimal() const
-		{
-			return lonSexagesimal_;
-		}
+        void setLonSexagesimal(const wxString& ls)
+        {
+            lonSexagesimal_ = ls;
+        }
+        
+        wxString lonSexagesimal() const
+        {
+            return lonSexagesimal_;
+        }
 
         void setBearing(const wxString& bear)
         {
@@ -135,15 +135,15 @@ namespace rics
             return timeStamp_;
         }
 
-		void setFormatTime(const wxString& ft)
-		{
-			formatTime_ = ft;
-		}
+        void setFormatTime(const wxString& ft)
+        {
+            formatTime_ = ft;
+        }
 
-		wxString formatTime() const
-		{
-			return formatTime_;
-		}
+        wxString formatTime() const
+        {
+            return formatTime_;
+        }
 
         void setSpeed(const wxString& s)
         {
@@ -212,12 +212,12 @@ namespace rics
 
         wxString latitude_;
         wxString longitude_;
-		wxString latSexagesimal_;
-		wxString lonSexagesimal_;
+        wxString latSexagesimal_;
+        wxString lonSexagesimal_;
         wxString bearing_;
         wxString formatBear_;
         wxString timeStamp_;
-		wxString formatTime_;
+        wxString formatTime_;
         wxString speed_;
         wxString formatSpeed_;
         wxString satellites_;

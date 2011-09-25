@@ -61,11 +61,11 @@ namespace rics
             if (session_->saveImages())
             {
 #if USE_JPEG_TURBO
-				camera_->saveImageTurbo();
+                camera_->saveImageTurbo();
 #else
                 camera_->saveImageWX();
 #endif
-				camera_->incFrameNumber();
+                camera_->incFrameNumber();
             }
         }
 

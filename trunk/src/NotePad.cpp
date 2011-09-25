@@ -26,118 +26,118 @@ along with RICS.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace rics
 {
-	NotePad::NotePad():
-	wxTextCtrl(),
+    NotePad::NotePad():
+    wxTextCtrl(),
     doWriteLatLonBearText_(true)
-	{
-	}
+    {
+    }
  
-	NotePad::NotePad(wxWindow *parent,
-					 wxWindowID id, 
+    NotePad::NotePad(wxWindow *parent,
+                     wxWindowID id, 
                      const Session* session,
-				     wxString* formatTime,
+                     wxString* formatTime,
                      wxString* latitude,
                      wxString* longitude,
-					 wxString* bearing,
-					 const wxString &value, 
-					 const wxPoint &pos, 
-					 const wxSize &size, 
-					 long style, 
-					 const wxValidator &validator, 
-					 const wxString &name):
-	wxTextCtrl(parent, id, value, pos, size, style, validator, name),
-	session_(session),
-	formatTime_(formatTime),
+                     wxString* bearing,
+                     const wxString &value, 
+                     const wxPoint &pos, 
+                     const wxSize &size, 
+                     long style, 
+                     const wxValidator &validator, 
+                     const wxString &name):
+    wxTextCtrl(parent, id, value, pos, size, style, validator, name),
+    session_(session),
+    formatTime_(formatTime),
     latitude_(latitude),
     longitude_(longitude),
-	bearing_(bearing)
-	{
-	}
+    bearing_(bearing)
+    {
+    }
 
-	NotePad::~NotePad()
-	{
-	}
+    NotePad::~NotePad()
+    {
+    }
 
     //Create the notepad.
-	bool NotePad::create(wxWindow *parent,
-						 wxWindowID id, 
+    bool NotePad::create(wxWindow *parent,
+                         wxWindowID id, 
                          const Session* session, 
-						 wxString* formatTime,
+                         wxString* formatTime,
                          wxString* latitude,
                          wxString* longitude,
-						 wxString* bearing,
-						 const wxString &value,
-						 const wxPoint &pos, 
-						 const wxSize &size, 
-						 long style, 
-						 const wxValidator &validator, 
-						 const wxString &name)
-	{
-		session_ = session;
-		formatTime_ = formatTime;
+                         wxString* bearing,
+                         const wxString &value,
+                         const wxPoint &pos, 
+                         const wxSize &size, 
+                         long style, 
+                         const wxValidator &validator, 
+                         const wxString &name)
+    {
+        session_ = session;
+        formatTime_ = formatTime;
         latitude_ = latitude;
         longitude_ = longitude;
-		bearing_ = bearing;
-		bool code = Create(parent, id, value, pos, size, style, validator, name);
-		Disable();
-		return code;
-	}
+        bearing_ = bearing;
+        bool code = Create(parent, id, value, pos, size, style, validator, name);
+        Disable();
+        return code;
+    }
 
     //Open existing csv file.
-	void NotePad::openFile()
-	{ 
-		if (session_->saveImages() || session_->createDB())
-		{
-			Enable();
-			
-			wxString filename = session_->path() + 
-								"\\" + 
-								session_->sessionName() + 
-								".csv";
+    void NotePad::openFile()
+    { 
+        if (session_->saveImages() || session_->createDB())
+        {
+            Enable();
+            
+            wxString filename = session_->path() + 
+                                "\\" + 
+                                session_->sessionName() + 
+                                ".csv";
 
-			Clear(); 
+            Clear(); 
 
-			if (wxFileExists(filename))//if file already exists
-			{
-				LoadFile(filename);
-			}
-		}
-		else
-		{
-			Clear();
+            if (wxFileExists(filename))//if file already exists
+            {
+                LoadFile(filename);
+            }
+        }
+        else
+        {
+            Clear();
             Disable();
-		}
-	}
+        }
+    }
 
     //Save csv file.
-	void NotePad::saveFile()
-	{
-		if (session_->saveImages() || session_->createDB())
-		{
-			wxString filename = session_->path() + 
-								"\\" + 
-								session_->sessionName() + 
-								".csv";
+    void NotePad::saveFile()
+    {
+        if (session_->saveImages() || session_->createDB())
+        {
+            wxString filename = session_->path() + 
+                                "\\" + 
+                                session_->sessionName() + 
+                                ".csv";
 
-			SaveFile(filename);
-		}
-	}
+            SaveFile(filename);
+        }
+    }
 
     //Formatted time, lat, lon, and bear text.
-	inline wxString NotePad::timeLatLonBearText()
-	{
+    inline wxString NotePad::timeLatLonBearText()
+    {
         wxString timeLatLonBear;
 
         if (doWriteLatLonBearText())
         {
-    		timeLatLonBear = "," + 
-						     *formatTime_ + 
-						     "," + 
-						     *latitude_ + 
-						     "," +
-						     *longitude_ +
-							 "," +
-							 *bearing_;
+            timeLatLonBear = "," + 
+                             *formatTime_ + 
+                             "," + 
+                             *latitude_ + 
+                             "," +
+                             *longitude_ +
+                             "," +
+                             *bearing_;
         }
         else
         {
@@ -145,7 +145,7 @@ namespace rics
         }
         
         return timeLatLonBear;
-	}
+    }
 
     bool NotePad::doWriteLatLonBearText() const
     {
@@ -169,8 +169,8 @@ namespace rics
 
     //Add damage level for F2-F9. Add time, lat, long and bear to the end of 
     //a sentence for return.
-	void NotePad::onKeyDown(wxKeyEvent& event)
-	{
+    void NotePad::onKeyDown(wxKeyEvent& event)
+    {
         if (doWriteLatLonBearText() & IsEmpty())
         {
             WriteText("comment,time,lat,lon,bearing\n");
@@ -208,11 +208,11 @@ namespace rics
         }
 
         saveFile();
-		event.Skip();
-	}
+        event.Skip();
+    }
 
-	BEGIN_EVENT_TABLE(NotePad, wxTextCtrl)
-		EVT_KEY_DOWN(NotePad::onKeyDown)
-	END_EVENT_TABLE()
+    BEGIN_EVENT_TABLE(NotePad, wxTextCtrl)
+        EVT_KEY_DOWN(NotePad::onKeyDown)
+    END_EVENT_TABLE()
 
 }

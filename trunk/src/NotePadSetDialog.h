@@ -46,7 +46,7 @@ namespace rics
         void onOK(wxCommandEvent& WXUNUSED(event));
         void onClose(wxCloseEvent& event);
 
-	private:
+    private:
         NotePad* np_;
 
         wxPanel* panel_;

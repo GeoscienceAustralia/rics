@@ -47,10 +47,10 @@ namespace rics
     private:
         void onPaint(wxPaintEvent &WXUNUSED(event));
 
-	private:
+    private:
         wxBitmap image_;
         wxString camera_;
-		wxFont font_;
+        wxFont font_;
 
         DECLARE_EVENT_TABLE()
 

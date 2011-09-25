@@ -38,23 +38,23 @@ namespace rics
         ~GPS();
 
         bool openPort(int portNumber);
-		void setCurrentPort(int port);
-		int currentPort();
+        void setCurrentPort(int port);
+        int currentPort();
         void close();
-		int bytesReceived();
+        int bytesReceived();
         void setGPSActive(bool active);
         bool gpsActive() const;
-		bool readBuffer(unsigned char* buffer, const int bufSize, unsigned long* bytesRead);
-		void parse(const unsigned char *buffer, const int bufSize);
+        bool readBuffer(unsigned char* buffer, const int bufSize, unsigned long* bytesRead);
+        void parse(const unsigned char *buffer, const int bufSize);
         wxString latitude();
         wxString longitude();
-		wxString latSexagesimal();
+        wxString latSexagesimal();
         wxString lonSexagesimal();
-		wxString bearing();
+        wxString bearing();
         wxString formatBear();
         wxString timeStamp();
-		wxString formatTime();
-		wxString date();
+        wxString formatTime();
+        wxString date();
         wxString speed();
         wxString formatSpeed();
         wxString satellites();
@@ -65,8 +65,8 @@ namespace rics
 
     private:
         NMEAParser nmeaParser_;
-		CSerial serial_;
-		int currentPort_;
+        CSerial serial_;
+        int currentPort_;
         bool gpsActive_;
         int bearing_;
     };

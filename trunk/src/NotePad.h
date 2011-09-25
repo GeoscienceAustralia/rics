@@ -29,68 +29,68 @@ along with RICS.  If not, see <http://www.gnu.org/licenses/>.
 
 namespace rics
 {
-	class Session;
+    class Session;
 
-	class NotePad : public wxTextCtrl
-	{
-	public:
-		NotePad();
-		NotePad(wxWindow *parent,
-   				wxWindowID id,
+    class NotePad : public wxTextCtrl
+    {
+    public:
+        NotePad();
+        NotePad(wxWindow *parent,
+                wxWindowID id,
                 const Session* session,
-				wxString* formatTime,
+                wxString* formatTime,
                 wxString* latitude,
                 wxString* longitude,
-				wxString* bearing,
-				const wxString& value = wxEmptyString,
-				const wxPoint& pos = wxDefaultPosition,
-				const wxSize& size = wxDefaultSize,
-				long style = 0,
-				const wxValidator& validator = wxDefaultValidator,
-				const wxString& name = wxTextCtrlNameStr);
-		~NotePad();
+                wxString* bearing,
+                const wxString& value = wxEmptyString,
+                const wxPoint& pos = wxDefaultPosition,
+                const wxSize& size = wxDefaultSize,
+                long style = 0,
+                const wxValidator& validator = wxDefaultValidator,
+                const wxString& name = wxTextCtrlNameStr);
+        ~NotePad();
 
-		bool create(wxWindow *parent,
+        bool create(wxWindow *parent,
                     wxWindowID id,
                     const Session* session,  
-				    wxString* formatTime,
+                    wxString* formatTime,
                     wxString* latitude,
                     wxString* longitude,
-					wxString* bearing,
-					const wxString& value = wxEmptyString,
-					const wxPoint& pos = wxDefaultPosition,
-					const wxSize& size = wxDefaultSize,
-					long style = 0,
-					const wxValidator& validator = wxDefaultValidator,
-					const wxString& name = wxTextCtrlNameStr);
+                    wxString* bearing,
+                    const wxString& value = wxEmptyString,
+                    const wxPoint& pos = wxDefaultPosition,
+                    const wxSize& size = wxDefaultSize,
+                    long style = 0,
+                    const wxValidator& validator = wxDefaultValidator,
+                    const wxString& name = wxTextCtrlNameStr);
 
-		void openFile();
-		void saveFile();
+        void openFile();
+        void saveFile();
 
         bool doWriteLatLonBearText() const;
         void setDoWriteLatLonBearText(bool text);
 
         void setDamageLevel(const wxString& dL, int i);
         
-	private:
-		inline wxString timeLatLonBearText();	
-		void onKeyDown(wxKeyEvent& event);
+    private:
+        inline wxString timeLatLonBearText();   
+        void onKeyDown(wxKeyEvent& event);
 
         inline wxString damageLevel(int i) const;
 
-	private:
-		const Session* session_;
-		wxString* formatTime_;
+    private:
+        const Session* session_;
+        wxString* formatTime_;
         wxString* latitude_;
         wxString* longitude_;
-		wxString* bearing_;
+        wxString* bearing_;
 
         bool doWriteLatLonBearText_;
 
         wxString damageLevels_[8];
 
-	 DECLARE_EVENT_TABLE()
-	};
+     DECLARE_EVENT_TABLE()
+    };
 }
 
 #endif //NOTEPAD_H

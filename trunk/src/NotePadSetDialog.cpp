@@ -63,7 +63,7 @@ namespace rics
         notePadBoxSizer->SetMinSize(200, 0);
 
         checkBoxLatLonBear_ = new wxCheckBox(panel_, 
-							                 ID_LatLon, 
+                                             ID_LatLon, 
                                              wxT("Add time, latitude, longitude and bearing at the end of each line"), 
                                              wxDefaultPosition, 
                                              wxDefaultSize, 
@@ -74,8 +74,8 @@ namespace rics
         wxBoxSizer* damageLevelsSizer = new wxBoxSizer(wxHORIZONTAL);
         damageLevelsSizer->SetMinSize(wxSize(5, 5)); 
         checkBoxDamageLevels_ = new wxCheckBox(panel_, 
-											   ID_DamageLevels, 
-								               wxT("Use predefined damage levels. File locaton: "), 
+                                               ID_DamageLevels, 
+                                               wxT("Use predefined damage levels. File locaton: "), 
                                                wxDefaultPosition, 
                                                wxDefaultSize,
                                                0);
@@ -204,7 +204,7 @@ namespace rics
         if (!success)
         {
             wxMessageDialog(panel_, "File could not be opened", "Open File", wxOK)
-			.ShowModal();
+            .ShowModal();
         }
 
         for (size_t i = 0; i < file.GetLineCount(); ++i)

@@ -32,60 +32,60 @@ namespace rics
     height_(2048),
     width_(2448),
     resizeFactor_(12),
-	heightResized_(2048/resizeFactor_),
+    heightResized_(2048/resizeFactor_),
     widthResized_(2448/resizeFactor_),
     stepBytesResized_(widthResized_*3*sizeof(unsigned char)),
     stepBytesOriginal_(width_*3*sizeof(unsigned char)),
     frameNumber_(0),
-	sessionPath_(""),
+    sessionPath_(""),
     frameBuffer_(UCArray(new unsigned char[height_*width_*3])),
-	resized_(UCArray(new unsigned char[heightResized_*widthResized_*3]))//memory for resized image
+    resized_(UCArray(new unsigned char[heightResized_*widthResized_*3]))//memory for resized image
     {
-		//Set packet size. Maximum is 9014.
-		PvAttrUint32Set(handle(), "PacketSize", 6000/*8228*/);
+        //Set packet size. Maximum is 9014.
+        PvAttrUint32Set(handle(), "PacketSize", 6000/*8228*/);
 
         //Calculating the "StreamBytesPerSecond". For a gigabit ethernet card, maximum stream
-		//bytes per second is set to (maximum) 124000000. To find the "StreamBytesPerSecond" value, 
-		//124000000 is divided by the number of cameras attached.
-		tPvErr returnCode = PvAttrUint32Set(handle(), "StreamBytesPerSecond", streamBytesPerSecond);
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        //bytes per second is set to (maximum) 124000000. To find the "StreamBytesPerSecond" value, 
+        //124000000 is divided by the number of cameras attached.
+        tPvErr returnCode = PvAttrUint32Set(handle(), "StreamBytesPerSecond", streamBytesPerSecond);
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
 
-		returnCode = PvCaptureStart(handle());
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-		returnCode = PvAttrEnumSet(handle(), "AcquisitionMode", "Continuous");
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-		returnCode = PvAttrEnumSet(handle(), "PixelFormat", "Bayer8");
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        returnCode = PvCaptureStart(handle());
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        returnCode = PvAttrEnumSet(handle(), "AcquisitionMode", "Continuous");
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        returnCode = PvAttrEnumSet(handle(), "PixelFormat", "Bayer8");
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         returnCode = PvAttrEnumSet(handle(), "FrameStartTriggerMode", /*"Freerun"*/"FixedRate");
         assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-		
-		//Set default camera parameters.
+        
+        //Set default camera parameters.
         setROI(0, 0, height(), width());
         setAutoMaxTime(5000);
-		setExposureTime(true, 0);
+        setExposureTime(true, 0);
         setFrameRate(4.0f);
-		setWhiteBalance(false, "R", 181);
-		setWhiteBalance(false, "B", 202);
+        setWhiteBalance(false, "R", 181);
+        setWhiteBalance(false, "B", 202);
         setGain(false, 0);
 
-		unsigned long totalBytesPerFrame;
-		returnCode = PvAttrUint32Get(handle(), "TotalBytesPerFrame", &totalBytesPerFrame);
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-		image_.ImageBufferSize = totalBytesPerFrame;
-		imageBuffer_ = UCArray(new unsigned char[totalBytesPerFrame]);
-		image_.ImageBuffer = imageBuffer_.get();
-	}
+        unsigned long totalBytesPerFrame;
+        returnCode = PvAttrUint32Get(handle(), "TotalBytesPerFrame", &totalBytesPerFrame);
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        image_.ImageBufferSize = totalBytesPerFrame;
+        imageBuffer_ = UCArray(new unsigned char[totalBytesPerFrame]);
+        image_.ImageBuffer = imageBuffer_.get();
+    }
 
     Camera::~Camera()
     {
     }
 
     //get handle
-	inline HANDLE Camera::handle()
-	{
-		return hCamera_;
-	}
-	
+    inline HANDLE Camera::handle()
+    {
+        return hCamera_;
+    }
+    
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////Set and get image properties
     inline unsigned long Camera::height() const
@@ -93,42 +93,42 @@ namespace rics
         return height_;
     }
 
-	inline void Camera::setHeight(unsigned long h)
-	{
-		height_ = h;
-	}
+    inline void Camera::setHeight(unsigned long h)
+    {
+        height_ = h;
+    }
 
     inline unsigned long Camera::width() const
     {
         return width_;
     }
 
-	inline void Camera::setWidth(unsigned long w)
-	{
-		width_ = w;
-	}
+    inline void Camera::setWidth(unsigned long w)
+    {
+        width_ = w;
+    }
 
-	inline long Camera::frameNumber() const
+    inline long Camera::frameNumber() const
     {
         return frameNumber_;
     }
 
-	void Camera::setFrameNumber(unsigned long fn)
+    void Camera::setFrameNumber(unsigned long fn)
     {
         frameNumber_ = fn;
     }
 
     //Increment the frame number
-	void Camera::incFrameNumber()
-	{
-		++frameNumber_;
-	}
+    void Camera::incFrameNumber()
+    {
+        ++frameNumber_;
+    }
 
     //Reset the frame number to 0 
-	void Camera::resetFrameNumber()
-	{
-		frameNumber_ = 0;
-	}
+    void Camera::resetFrameNumber()
+    {
+        frameNumber_ = 0;
+    }
 
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -139,8 +139,8 @@ namespace rics
         tPvErr returnCode = PvCaptureQuery(handle(), &started);
         if (!started)
         {
-		    returnCode = PvCaptureStart(handle());
-		    assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            returnCode = PvCaptureStart(handle());
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         }
 
         //start stream
@@ -158,9 +158,9 @@ namespace rics
             returnCode = PvCommandRun(handle(), "AcquisitionStop");
             assert(returnCode == 0 || returnCode == ePvErrUnplugged);
             returnCode = PvCaptureQueueClear(handle());
-		    assert(returnCode == 0 || returnCode == ePvErrUnplugged);		 
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);         
             returnCode = PvCaptureEnd(handle());
-		    assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         }
     }
 
@@ -172,15 +172,15 @@ namespace rics
         {
             return resized_;
         }
-		
+        
         returnCode = PvCaptureWaitForFrameDone(handle(), &image_, PVINFINITE);
         if (returnCode)
         {
             return resized_;
         }
 
-		unsigned char *original = frameBuffer_.get();
-		PvUtilityColorInterpolate(&image_, &(original[0]), &(original[1]), &(original[2]), 2, 0);
+        unsigned char *original = frameBuffer_.get();
+        PvUtilityColorInterpolate(&image_, &(original[0]), &(original[1]), &(original[2]), 2, 0);
 
         //This section resizes the image. Saves wxWidgets doing it. 
         //Byte order of images in frameBuffer are in bmp format (GBR, left to right, bottom to top).
@@ -212,38 +212,38 @@ namespace rics
         .SaveFile(frameName(), wxBITMAP_TYPE_JPEG);
     }
 
-	//save image as jpeg using the libjpeg-turbo library
-	void Camera::saveImageTurbo()
+    //save image as jpeg using the libjpeg-turbo library
+    void Camera::saveImageTurbo()
     {
-		JPEGWriter writer;
-		writer.header(width(), height(), 3, JPEG::COLOR_RGB);
-		writer.setQuality(80);
-		writer.write(frameName(), frameBuffer_.get());
+        JPEGWriter writer;
+        writer.header(width(), height(), 3, JPEG::COLOR_RGB);
+        writer.setQuality(80);
+        writer.write(frameName(), frameBuffer_.get());
     }
 
-	inline wxString Camera::sessionName()
-	{
-		return sessionName_;
-	}
+    inline wxString Camera::sessionName()
+    {
+        return sessionName_;
+    }
 
-	void Camera::setSessionName(const wxString& sn)
+    void Camera::setSessionName(const wxString& sn)
     {
         sessionName_ = sn;
     }
 
-	inline wxString Camera::sessionPath() const
-	{
-		return sessionPath_;
-	}
-
-	void Camera::setSessionPath(const wxString& sessionPath)
-	{ 
-		sessionPath_ = sessionPath;
-	}
-	
-	std::string Camera::frameName()
+    inline wxString Camera::sessionPath() const
     {
-		std::string frameName;
+        return sessionPath_;
+    }
+
+    void Camera::setSessionPath(const wxString& sessionPath)
+    { 
+        sessionPath_ = sessionPath;
+    }
+    
+    std::string Camera::frameName()
+    {
+        std::string frameName;
         
         frameName = sessionPath();
 
@@ -302,11 +302,11 @@ namespace rics
 
         tPvErr returnCode = PvAttrUint32Set(handle(), "Width", width);
         assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-	    returnCode = PvAttrUint32Set(handle(), "Height", height);
+        returnCode = PvAttrUint32Set(handle(), "Height", height);
         assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-	    returnCode = PvAttrUint32Set(handle(), "RegionX", left);
+        returnCode = PvAttrUint32Set(handle(), "RegionX", left);
         assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-	    returnCode = PvAttrUint32Set(handle(), "RegionY", top);
+        returnCode = PvAttrUint32Set(handle(), "RegionY", top);
         assert(returnCode == 0 || returnCode == ePvErrUnplugged);
     }
     
@@ -316,25 +316,25 @@ namespace rics
 
         if (autoMode)
         {
-			returnCode = PvAttrEnumSet(handle(), "ExposureMode", "Auto");
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            returnCode = PvAttrEnumSet(handle(), "ExposureMode", "Auto");
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         }
         else
         {
-			returnCode = PvAttrEnumSet(handle(), "ExposureMode", "Manual");
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-			returnCode = PvAttrUint32Set(handle(), "ExposureValue", exposureTime);			
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            returnCode = PvAttrEnumSet(handle(), "ExposureMode", "Manual");
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            returnCode = PvAttrUint32Set(handle(), "ExposureValue", exposureTime);            
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         }
     }
 
-	unsigned long Camera::exposureTime()
-	{   
-		unsigned long exposureTime;
-		tPvErr returnCode = PvAttrUint32Get(handle(), "ExposureValue", &exposureTime);
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-		return exposureTime;
-	}
+    unsigned long Camera::exposureTime()
+    {   
+        unsigned long exposureTime;
+        tPvErr returnCode = PvAttrUint32Get(handle(), "ExposureValue", &exposureTime);
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        return exposureTime;
+    }
 
     //Set the maximum exposure time when exposure mode is auto.
     //This is used to reduce image blur as the vehicle passes a dark scene.
@@ -343,8 +343,8 @@ namespace rics
     void Camera::setAutoMaxTime(unsigned long exposureMaxTime)
     {
         tPvErr returnCode;
-		returnCode = PvAttrUint32Set(handle(), "ExposureAutoMax", exposureMaxTime);			
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        returnCode = PvAttrUint32Set(handle(), "ExposureAutoMax", exposureMaxTime);            
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
     }
 
     float Camera::maxFrameRate()
@@ -359,33 +359,33 @@ namespace rics
     void Camera::setFrameRate(float frameRate)
     {
         tPvErr returnCode = PvAttrFloat32Set(handle(), "FrameRate", frameRate);
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
     }
 
-	void Camera::setWhiteBalance(bool autoMode, char* colour, unsigned long value)
-	{
-		tPvErr returnCode;
+    void Camera::setWhiteBalance(bool autoMode, char* colour, unsigned long value)
+    {
+        tPvErr returnCode;
 
         if (autoMode)
         {
-			returnCode = PvAttrEnumSet(handle(), "WhitebalMode", "Auto");
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            returnCode = PvAttrEnumSet(handle(), "WhitebalMode", "Auto");
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         }
         else
         {
-			returnCode = PvAttrEnumSet(hCamera_, "WhitebalMode", "Manual");
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-			
-			if (colour[0] == 'R')
-			{
-				returnCode = PvAttrUint32Set(handle(), "WhitebalValueRed", value);			
-				assert(returnCode == 0 || returnCode == ePvErrUnplugged);	
-			}
-			else if (colour[0] == 'B')
-			{
-				returnCode = PvAttrUint32Set(handle(), "WhitebalValueBlue", value);			
-				assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-			}
+            returnCode = PvAttrEnumSet(hCamera_, "WhitebalMode", "Manual");
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            
+            if (colour[0] == 'R')
+            {
+                returnCode = PvAttrUint32Set(handle(), "WhitebalValueRed", value);            
+                assert(returnCode == 0 || returnCode == ePvErrUnplugged);    
+            }
+            else if (colour[0] == 'B')
+            {
+                returnCode = PvAttrUint32Set(handle(), "WhitebalValueBlue", value);            
+                assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            }
         }
     }
 
@@ -395,36 +395,36 @@ namespace rics
 
         if (autoMode)
         {
-			returnCode = PvAttrUint32Set(handle(), "GainAutoMax", 24);
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            returnCode = PvAttrUint32Set(handle(), "GainAutoMax", 24);
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
             returnCode = PvAttrUint32Set(handle(), "GainAutoMin", 0);
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
             returnCode = PvAttrEnumSet(handle(), "GainMode", "Auto");
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         }
         else
         {
-			returnCode = PvAttrEnumSet(handle(), "GainMode", "Manual");
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-			returnCode = PvAttrUint32Set(handle(), "GainValue", gain);			
-			assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            returnCode = PvAttrEnumSet(handle(), "GainMode", "Manual");
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+            returnCode = PvAttrUint32Set(handle(), "GainValue", gain);            
+            assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         }
     }
 
     void Camera::adjustPacketSize(unsigned long packetSize)
     {
-		tPvErr returnCode = PvCaptureEnd(handle());
-		returnCode = PvCaptureAdjustPacketSize(handle(), packetSize);//*/PvAttrUint32Set(handle(), "PacketSize", packetSize);
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
-		returnCode = PvCaptureStart(handle());
-		assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        tPvErr returnCode = PvCaptureEnd(handle());
+        returnCode = PvCaptureAdjustPacketSize(handle(), packetSize);//*/PvAttrUint32Set(handle(), "PacketSize", packetSize);
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
+        returnCode = PvCaptureStart(handle());
+        assert(returnCode == 0 || returnCode == ePvErrUnplugged);
     }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////get camera information
     int Camera::uniqueID()
     {
-		unsigned long id;
+        unsigned long id;
         tPvErr returnCode = PvAttrUint32Get(handle(), "UniqueId", &id);
         assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         return id;
@@ -438,7 +438,7 @@ namespace rics
 
     wxString Camera::cameraName()
     {
-		char buffer[256];
+        char buffer[256];
         tPvErr returnCode = PvAttrStringGet(handle(), "CameraName", buffer, 256, NULL);
         assert(returnCode == 0 || returnCode == ePvErrUnplugged);
         size_t length = strlen(buffer);

@@ -32,7 +32,7 @@ namespace rics
     ImagePanel::ImagePanel(wxPanel *parent, wxWindowID id, wxString &camera, const wxPoint &pos, const wxSize &size):
     wxPanel(parent,  id, pos, size),
     camera_(camera),
-	font_(8, -1, wxNORMAL, wxLIGHT, false)
+    font_(8, -1, wxNORMAL, wxLIGHT, false)
     {
         SetBackgroundStyle(wxBG_STYLE_CUSTOM);
         image_ = wxBitmap(306, 256, -1);
@@ -48,7 +48,7 @@ namespace rics
         wxBufferedPaintDC dc(this);
         dc.DrawBitmap(image_, 0, 0);
         dc.SetTextForeground(*wxRED);
-		dc.SetFont(font_);
+        dc.SetFont(font_);
         dc.DrawText(camera_, 10, 10);
     }
 

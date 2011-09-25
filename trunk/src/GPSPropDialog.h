@@ -37,7 +37,7 @@ namespace rics
 
         void createGPSSettingsPage();
 
-		void searchPorts();
+        void searchPorts();
 
     private:
         void onOK(wxCommandEvent& WXUNUSED(event));
@@ -46,9 +46,9 @@ namespace rics
 
         void onClose(wxCloseEvent& WXUNUSED(event));
 
-		void onSearchPorts(wxCommandEvent& WXUNUSED(event));
-	
-	private:
+        void onSearchPorts(wxCommandEvent& WXUNUSED(event));
+    
+    private:
         GPS* gps_;
         
         int selectPort_;
@@ -59,7 +59,7 @@ namespace rics
         {
             ID_OK = 1,
             ID_ComboBoxPort,
-			ID_Button
+            ID_Button
         };
 
         DECLARE_EVENT_TABLE()

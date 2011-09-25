@@ -41,15 +41,15 @@ namespace rics
         void createExposureTimePage(wxNotebook* notebook);
         void createGainPage(wxNotebook* notebook);
         void createWhiteBalancePage(wxNotebook* notebook);
-		void createFrameRatePage(wxNotebook* notebook_);
+        void createFrameRatePage(wxNotebook* notebook_);
         void createPacketSizePage(wxNotebook* notebook_);
 
-		void disablePanelPS();
-		void enablePanelPS();
+        void disablePanelPS();
+        void enablePanelPS();
     
-		void setPlay(bool play);
+        void setPlay(bool play);
 
-	private:
+    private:
         void onOK(wxCommandEvent& WXUNUSED(event));
         
         void setDefaultCameraNames();
@@ -58,74 +58,74 @@ namespace rics
         bool checkDuplicateCameraNames();
         
         void onCheckBoxCameraSelectET(wxCommandEvent& WXUNUSED(event));
-		void onComboBoxET(wxCommandEvent& WXUNUSED(event));
+        void onComboBoxET(wxCommandEvent& WXUNUSED(event));
         void onSliderET(wxCommandEvent& WXUNUSED(event));
-		void onSliderAMT(wxCommandEvent& WXUNUSED(event));
+        void onSliderAMT(wxCommandEvent& WXUNUSED(event));
         void onTxtCtrlET(wxCommandEvent& WXUNUSED(event));
-		bool txtCtrlET();
-		void onTxtCtrlAMT(wxCommandEvent& WXUNUSED(event));
-		bool txtCtrlAMT();
+        bool txtCtrlET();
+        void onTxtCtrlAMT(wxCommandEvent& WXUNUSED(event));
+        bool txtCtrlAMT();
         void onCheckBoxAutoET(wxCommandEvent& WXUNUSED(event));
 
         void onCheckBoxCameraSelectGain(wxCommandEvent& WXUNUSED(event));
-		void onComboBoxGain(wxCommandEvent& WXUNUSED(event));
+        void onComboBoxGain(wxCommandEvent& WXUNUSED(event));
         void onSliderGain(wxCommandEvent& WXUNUSED(event));
         void onTxtCtrlGain(wxCommandEvent& WXUNUSED(event));
-		bool txtCtrlGain();
+        bool txtCtrlGain();
         void onCheckBoxAutoGain(wxCommandEvent& WXUNUSED(event));
 
         void onCheckBoxCameraSelectWB(wxCommandEvent& WXUNUSED(event));
-		void onComboBoxWB(wxCommandEvent& WXUNUSED(event));
-		void onSliderWBRed(wxCommandEvent& WXUNUSED(event));
+        void onComboBoxWB(wxCommandEvent& WXUNUSED(event));
+        void onSliderWBRed(wxCommandEvent& WXUNUSED(event));
         void onSliderWBBlue(wxCommandEvent& WXUNUSED(event));
-		void onTxtCtrlWBRed(wxCommandEvent& WXUNUSED(event));
-		bool txtCtrlWBRed();
-		void onTxtCtrlWBBlue(wxCommandEvent& WXUNUSED(event));
-		bool txtCtrlWBBlue();
-		void onCheckBoxAutoWB(wxCommandEvent& WXUNUSED(event));
+        void onTxtCtrlWBRed(wxCommandEvent& WXUNUSED(event));
+        bool txtCtrlWBRed();
+        void onTxtCtrlWBBlue(wxCommandEvent& WXUNUSED(event));
+        bool txtCtrlWBBlue();
+        void onCheckBoxAutoWB(wxCommandEvent& WXUNUSED(event));
 
-   		void onSliderFR(wxCommandEvent& WXUNUSED(event));
-		void onTxtCtrlFR(wxCommandEvent& WXUNUSED(event));
-		bool txtCtrlFR();
+        void onSliderFR(wxCommandEvent& WXUNUSED(event));
+        void onTxtCtrlFR(wxCommandEvent& WXUNUSED(event));
+        bool txtCtrlFR();
 
-		void onSliderPS(wxCommandEvent& WXUNUSED(event));
-		void onTxtCtrlPS(wxCommandEvent& WXUNUSED(event));
-		bool txtCtrlPS();
+        void onSliderPS(wxCommandEvent& WXUNUSED(event));
+        void onTxtCtrlPS(wxCommandEvent& WXUNUSED(event));
+        bool txtCtrlPS();
 
         void onClose(wxCloseEvent& WXUNUSED(event));
 
-		void setExposureTime(double value);
-		double exposureTime() const;
-		void setAutoMaxTime(double value);
-		double autoMaxTime() const;
-		void setAutoET(bool value);
-		bool autoET() const;
-		void adjustCameraExposureTime();
-		void adjustCameraAutoMaxTime();
+        void setExposureTime(double value);
+        double exposureTime() const;
+        void setAutoMaxTime(double value);
+        double autoMaxTime() const;
+        void setAutoET(bool value);
+        bool autoET() const;
+        void adjustCameraExposureTime();
+        void adjustCameraAutoMaxTime();
 
-		void setGain(double value);
-		double gain() const;
-		void setAutoGain(bool value);
-		bool autoGain() const;
-		void adjustCameraGain();
+        void setGain(double value);
+        double gain() const;
+        void setAutoGain(bool value);
+        bool autoGain() const;
+        void adjustCameraGain();
 
-		void setWhiteBalance(double value, char* colour);
-		double whiteBalance(char* colour);
-		void setAutoWB(bool value);
-		bool autoWB() const;
-		void adjustCameraWB(char* colour);
+        void setWhiteBalance(double value, char* colour);
+        double whiteBalance(char* colour);
+        void setAutoWB(bool value);
+        bool autoWB() const;
+        void adjustCameraWB(char* colour);
 
-		void setFrameRate(unsigned long);
-		unsigned long frameRate() const;
-		void adjustCameraFR();
+        void setFrameRate(unsigned long);
+        unsigned long frameRate() const;
+        void adjustCameraFR();
 
-		void setPacketSize(unsigned long);
-		unsigned long packetSize() const;
-		void adjustCameraPS();
+        void setPacketSize(unsigned long);
+        unsigned long packetSize() const;
+        void adjustCameraPS();
 
-		bool play() const;
+        bool play() const;
 
-	private:
+    private:
         Cameras* cameras_;
         size_t numCameras_;
         
@@ -134,21 +134,21 @@ namespace rics
         
         bool cameraSelectET_;
         bool cameraSelectGain_;
-		bool cameraSelectWB_;
-		int selectComboBoxET_;
+        bool cameraSelectWB_;
+        int selectComboBoxET_;
         int selectComboBoxGain_;
         int selectComboBoxWB_;
         std::vector<double> exposureTimes_;
-		std::vector<double> autoMaxTimes_;
-		std::vector<bool> autoET_;
+        std::vector<double> autoMaxTimes_;
+        std::vector<bool> autoET_;
         std::vector<int> gains_;
-		std::vector<bool> autoGain_;
+        std::vector<bool> autoGain_;
         std::vector<unsigned long> whiteBalanceRed_;
-		std::vector<unsigned long> whiteBalanceBlue_;
-		std::vector<bool> autoWB_;
-		unsigned long frameRate_;
+        std::vector<unsigned long> whiteBalanceBlue_;
+        std::vector<bool> autoWB_;
+        unsigned long frameRate_;
         unsigned long packetSize_;
-		bool play_;
+        bool play_;
         wxNotebook* notebook_;
 
         wxComboBox* cameraSelectChoiceET_;
@@ -156,29 +156,29 @@ namespace rics
         wxComboBox* cameraSelectChoiceWB_;
 
         wxSlider* sliderET_;
-		wxSlider* sliderAMT_;
+        wxSlider* sliderAMT_;
         wxSlider* sliderGain_;
         wxSlider* sliderWBRed_;
-		wxSlider* sliderWBBlue_;
-		wxSlider* sliderFR_;
+        wxSlider* sliderWBBlue_;
+        wxSlider* sliderFR_;
         wxSlider* sliderPS_;
         
         wxTextCtrl* textCtrlET_;
-		 wxTextCtrl* textCtrlAMT_;
+         wxTextCtrl* textCtrlAMT_;
         wxTextCtrl* textCtrlGain_;
         wxTextCtrl* textCtrlWBRed_;
-		wxTextCtrl* textCtrlWBBlue_;
-		wxTextCtrl* textCtrlFR_;
+        wxTextCtrl* textCtrlWBBlue_;
+        wxTextCtrl* textCtrlFR_;
         wxTextCtrl* textCtrlPS_;
 
-		wxCheckBox* checkBoxCameraSelectET_;
+        wxCheckBox* checkBoxCameraSelectET_;
         wxCheckBox* checkBoxAutoET_;
-   		wxCheckBox* checkBoxCameraSelectGain_;
+        wxCheckBox* checkBoxCameraSelectGain_;
         wxCheckBox* checkBoxAutoGain_;
-		wxCheckBox* checkBoxCameraSelectWB_;
-		wxCheckBox* checkBoxAutoWB_;
+        wxCheckBox* checkBoxCameraSelectWB_;
+        wxCheckBox* checkBoxAutoWB_;
 
-    	wxPanel* panelFR_;
+        wxPanel* panelFR_;
 
         wxPanel* panelPS_;
 
@@ -188,28 +188,28 @@ namespace rics
             ID_Camera_IDs,
             ID_CameraPositions,
             ID_CheckBoxCameraSelectET,
-			ID_ComboBoxET,
+            ID_ComboBoxET,
             ID_SliderET,
             ID_TxtCtrlET,
-			ID_SliderAMT,
-			ID_TxtCtrlAMT,
+            ID_SliderAMT,
+            ID_TxtCtrlAMT,
             ID_CheckBoxAutoET,
             ID_CheckBoxCameraSelectGain,
-			ID_ComboBoxGain,
+            ID_ComboBoxGain,
             ID_SliderGain,
             ID_TxtCtrlGain,
             ID_CheckBoxAutoGain,
             ID_CheckBoxCameraSelectWB,
-			ID_ComboBoxWB,
+            ID_ComboBoxWB,
             ID_SliderWBRed,
             ID_TxtCtrlWBRed,
-			ID_SliderWBBlue,
-			ID_TxtCtrlWBBlue,
-			ID_CheckBoxWB,
-   			ID_SliderFR,
-			ID_TxtCtrlFR,
-			ID_SliderPS,
-			ID_TxtCtrlPS
+            ID_SliderWBBlue,
+            ID_TxtCtrlWBBlue,
+            ID_CheckBoxWB,
+            ID_SliderFR,
+            ID_TxtCtrlFR,
+            ID_SliderPS,
+            ID_TxtCtrlPS
         };
 
         DECLARE_EVENT_TABLE()

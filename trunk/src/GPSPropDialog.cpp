@@ -34,8 +34,8 @@ namespace rics
         wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
 
         panel_ = new wxPanel(this, wxID_ANY);
-		createGPSSettingsPage();
-		topSizer->Add(panel_, 1, wxEXPAND);
+        createGPSSettingsPage();
+        topSizer->Add(panel_, 1, wxEXPAND);
 
         //Button
         wxBoxSizer *buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -58,8 +58,8 @@ namespace rics
         portSelectSizer->SetMinSize(200, 0);
 
         wxArrayString values;
-		
-		for (size_t i = 1; i < 65; ++i)
+        
+        for (size_t i = 1; i < 65; ++i)
         {
             values.Add(boost::lexical_cast<std::string>(i));
         }
@@ -75,10 +75,10 @@ namespace rics
                                wxCB_READONLY);
         
         wxButton* searchButton = new wxButton(panel_, ID_Button, "Search Ports", wxDefaultPosition, wxDefaultSize, 0);
-		
-		portSelectSizer->Add(text, 0, wxALIGN_LEFT | wxTOP, 13);
+        
+        portSelectSizer->Add(text, 0, wxALIGN_LEFT | wxTOP, 13);
         portSelectSizer->Add(port_, 0, wxALIGN_LEFT | wxLEFT | wxRIGHT | wxTOP | wxBOTTOM, 10);
-		portSelectSizer->Add(searchButton, 0, wxALIGN_LEFT | wxLEFT | wxRIGHT | wxTOP, 10);
+        portSelectSizer->Add(searchButton, 0, wxALIGN_LEFT | wxLEFT | wxRIGHT | wxTOP, 10);
 
         //Add to top level
         panelSizer->Add(portSelectSizer,
@@ -100,65 +100,65 @@ namespace rics
         EndModal(GetReturnCode());
     }
     
-	void GPSPropDialog::onComboBoxPort(wxCommandEvent& WXUNUSED(event))
-	{
-		selectPort_ = port_->GetCurrentSelection();
+    void GPSPropDialog::onComboBoxPort(wxCommandEvent& WXUNUSED(event))
+    {
+        selectPort_ = port_->GetCurrentSelection();
 
-		gps_->close();
-		bool code = gps_->openPort(selectPort_ + 1);
+        gps_->close();
+        bool code = gps_->openPort(selectPort_ + 1);
 
-		if (code)
-		{
-			gps_->setGPSActive(true);
+        if (code)
+        {
+            gps_->setGPSActive(true);
             wxString s = "COM" + boost::lexical_cast<std::string>(selectPort_ + 1);
-			wxMessageDialog(panel_, "GPS device found on " + s, "Open COM Port", wxOK)
-			.ShowModal();
+            wxMessageDialog(panel_, "GPS device found on " + s, "Open COM Port", wxOK)
+            .ShowModal();
             EndModal(GetReturnCode());
-		}
-		else
-		{
-			gps_->setGPSActive(false);
+        }
+        else
+        {
+            gps_->setGPSActive(false);
             wxString s = "COM" + boost::lexical_cast<std::string>(selectPort_ + 1);
-			wxMessageDialog(panel_, "No GPS device detected on " + s, "Open COM Port", wxOK | wxICON_ERROR)
-			.ShowModal();
-		}
-	}
+            wxMessageDialog(panel_, "No GPS device detected on " + s, "Open COM Port", wxOK | wxICON_ERROR)
+            .ShowModal();
+        }
+    }
 
-	void GPSPropDialog::onSearchPorts(wxCommandEvent& WXUNUSED(event))
-	{
-		for (int i = 1; i < 65; ++i)
-		{
-			port_->SetValue(boost::lexical_cast<std::string>(i));
-			gps_->close();
-			int code = gps_->openPort(i);
-			Sleep(250);
+    void GPSPropDialog::onSearchPorts(wxCommandEvent& WXUNUSED(event))
+    {
+        for (int i = 1; i < 65; ++i)
+        {
+            port_->SetValue(boost::lexical_cast<std::string>(i));
+            gps_->close();
+            int code = gps_->openPort(i);
+            Sleep(250);
 
-			if (code)
-			{	
-				gps_->setGPSActive(true);
-				wxString s = "COM" + boost::lexical_cast<std::string>(i);
-				wxMessageDialog(panel_, "GPS device found on " + s, "Search COM Ports", wxOK)
-				.ShowModal();
-				EndModal(GetReturnCode());
-				return;
-			}
-		}  
+            if (code)
+            {   
+                gps_->setGPSActive(true);
+                wxString s = "COM" + boost::lexical_cast<std::string>(i);
+                wxMessageDialog(panel_, "GPS device found on " + s, "Search COM Ports", wxOK)
+                .ShowModal();
+                EndModal(GetReturnCode());
+                return;
+            }
+        }  
 
-		gps_->setGPSActive(false);
+        gps_->setGPSActive(false);
         wxMessageDialog(panel_, "No GPS device detected", "Search COM Ports", wxOK | wxICON_ERROR)
-		.ShowModal();
-	}
+        .ShowModal();
+    }
 
-	void GPSPropDialog::searchPorts()
-	{
-		onSearchPorts(wxCommandEvent());
-	}
+    void GPSPropDialog::searchPorts()
+    {
+        onSearchPorts(wxCommandEvent());
+    }
     
    BEGIN_EVENT_TABLE(GPSPropDialog, wxDialog)
         EVT_BUTTON(ID_OK, GPSPropDialog::onOK)
         EVT_COMBOBOX(ID_ComboBoxPort, GPSPropDialog::onComboBoxPort)
         EVT_CLOSE(GPSPropDialog::onClose)
-		EVT_BUTTON(ID_Button, GPSPropDialog::onSearchPorts)
+        EVT_BUTTON(ID_Button, GPSPropDialog::onSearchPorts)
    END_EVENT_TABLE()
 
 

@@ -29,20 +29,20 @@ along with RICS.  If not, see <http://www.gnu.org/licenses/>.
 namespace rics 
 {
     SessionPropDialog::SessionPropDialog(Frame* frame, 
-										 const wxString &title, 
-										 Session* session, 
-										 Cameras* cameras,
-										 Database* db,
-										 GPS* gps):
+                                         const wxString &title, 
+                                         Session* session, 
+                                         Cameras* cameras,
+                                         Database* db,
+                                         GPS* gps):
     wxDialog(frame, wxID_ANY, title, wxDefaultPosition, wxDefaultSize, wxDEFAULT_DIALOG_STYLE | wxRESIZE_BORDER),
     frame_(frame),
     session_(session),
-	cameras_(cameras),
-	db_(db),
-	gps_(gps),
-	numCameras_((*cameras_).size()),
+    cameras_(cameras),
+    db_(db),
+    gps_(gps),
+    numCameras_((*cameras_).size()),
     directory_(this, ID_Browse, "C:\\RICS Sessions", "Session Location", wxDefaultPosition, wxDefaultSize, 
-			   wxDIRP_USE_TEXTCTRL | wxDD_NEW_DIR_BUTTON),
+               wxDIRP_USE_TEXTCTRL | wxDD_NEW_DIR_BUTTON),
     dir_("C:\\RICS Sessions")
     {   
         wxBoxSizer *topSizer = new wxBoxSizer(wxVERTICAL);
@@ -79,24 +79,24 @@ namespace rics
         
         wxBoxSizer* boxSizer = new wxBoxSizer(wxVERTICAL);
         
-		wxBoxSizer* topSizer = new wxBoxSizer(wxHORIZONTAL);
-		wxStaticText* textSN = new wxStaticText(this, wxID_ANY, "Session Name:", wxDefaultPosition, wxDefaultSize, 0);
+        wxBoxSizer* topSizer = new wxBoxSizer(wxHORIZONTAL);
+        wxStaticText* textSN = new wxStaticText(this, wxID_ANY, "Session Name:", wxDefaultPosition, wxDefaultSize, 0);
         textCtrlSN_ = new wxTextCtrl(this,
                                      ID_SN,
                                      "",
                                      wxDefaultPosition,
                                      wxSize(100, -1),
                                      wxTE_PROCESS_ENTER);
-		checkBoxSN_ = new wxCheckBox(this, wxID_ANY, wxT("Add GPS date/time?"), wxDefaultPosition, wxDefaultSize, 0);
-		checkBoxSN_->SetValue(true);
-		topSizer->Add(textSN, 0, wxALL | wxALIGN_LEFT, 10);
-		topSizer->Add(textCtrlSN_, 0, wxALL | wxALIGN_LEFT, 10);
-		topSizer->Add(checkBoxSN_, 0, wxALL | wxALIGN_LEFT, 10);
+        checkBoxSN_ = new wxCheckBox(this, wxID_ANY, wxT("Add GPS date/time?"), wxDefaultPosition, wxDefaultSize, 0);
+        checkBoxSN_->SetValue(true);
+        topSizer->Add(textSN, 0, wxALL | wxALIGN_LEFT, 10);
+        topSizer->Add(textCtrlSN_, 0, wxALL | wxALIGN_LEFT, 10);
+        topSizer->Add(checkBoxSN_, 0, wxALL | wxALIGN_LEFT, 10);
 
-		wxBoxSizer *bottomSizer = new wxBoxSizer(wxHORIZONTAL);
-		wxStaticText* textLoc = new wxStaticText(this, wxID_ANY, "Session Location:", wxDefaultPosition, wxDefaultSize, 0);
-		bottomSizer->Add(textLoc, 0, wxALL | wxALIGN_LEFT, 5);
-		bottomSizer->Add(&directory_, 0, wxALL | wxALIGN_LEFT, 5);
+        wxBoxSizer *bottomSizer = new wxBoxSizer(wxHORIZONTAL);
+        wxStaticText* textLoc = new wxStaticText(this, wxID_ANY, "Session Location:", wxDefaultPosition, wxDefaultSize, 0);
+        bottomSizer->Add(textLoc, 0, wxALL | wxALIGN_LEFT, 5);
+        bottomSizer->Add(&directory_, 0, wxALL | wxALIGN_LEFT, 5);
 
         boxSizer->Add(topSizer, 0, wxALIGN_CENTRE_VERTICAL | wxALL, 5);
         boxSizer->Add(bottomSizer, 0, wxALIGN_CENTRE_VERTICAL | wxALL, 5);
@@ -104,27 +104,27 @@ namespace rics
         sessionNameSizer_->Add(boxSizer, 0, wxALIGN_CENTRE_VERTICAL | wxALL, 5);
     }
 
-	//////OK/Close Buttons
-	void SessionPropDialog::onOK(wxCommandEvent& WXUNUSED(event))
-	{
-		//make sure camera names are not duplicates.
+    //////OK/Close Buttons
+    void SessionPropDialog::onOK(wxCommandEvent& WXUNUSED(event))
+    {
+        //make sure camera names are not duplicates.
         if (!checkDuplicateCameraNames())
         {
-			wxMessageDialog(this, "Duplicate camera names chosen. Please assign a unique camera name to each camera",
+            wxMessageDialog(this, "Duplicate camera names chosen. Please assign a unique camera name to each camera",
             "Duplicate Camera Name Error", wxICON_HAND)
             .ShowModal();
-			return;
+            return;
         }
 
-		session_->setSaveImages(false);//initially have save image and create db off.
-		session_->setCreateDB(false);
+        session_->setSaveImages(false);//initially have save image and create db off.
+        session_->setCreateDB(false);
         session_->initCurrentFrame();//Set current frame number to 0. Only changed if database already exists.
 
         bool sessionExists = false;
         
         //make sure session name is not empty
         if (sessionName_ != "")
-		{
+        {
             //make sure the first character of session name is not a space
             if (sessionName_[0] == ' ')
             {
@@ -133,14 +133,14 @@ namespace rics
                 return;
             }
 
-			//make sure GPS is active before creating a session
-			if (!gps_->gpsActive())
-			{
-				wxMessageDialog(this, "No GPS data detected. Check COM port setting",
-				"RICS GPS Error", wxICON_HAND)
-				.ShowModal();
-				return;
-			}
+            //make sure GPS is active before creating a session
+            if (!gps_->gpsActive())
+            {
+                wxMessageDialog(this, "No GPS data detected. Check COM port setting",
+                "RICS GPS Error", wxICON_HAND)
+                .ShowModal();
+                return;
+            }
 
             //If directory doesn't exist, then create
             if (!wxDirExists(dir_))
@@ -150,24 +150,24 @@ namespace rics
 
             onTxtSN(wxCommandEvent());
 
-			//If system date and time are required.
-			//wxDateTime dateTime = wxDateTime::Now();
-			//int year = dateTime.GetYear();
-			//int month = dateTime.GetMonth();
-			//int day = dateTime.GetDay();
-			//int hour = dateTime.GetHour();
-			//int minute = dateTime.GetMinute();
-			//int second = dateTime.GetSecond();
+            //If system date and time are required.
+            //wxDateTime dateTime = wxDateTime::Now();
+            //int year = dateTime.GetYear();
+            //int month = dateTime.GetMonth();
+            //int day = dateTime.GetDay();
+            //int hour = dateTime.GetHour();
+            //int minute = dateTime.GetMinute();
+            //int second = dateTime.GetSecond();
 
-			if (checkBoxSN_->IsChecked())
-			{
-			
-				sessionName_ = sessionName_ + 
-							   "_" + 
-							   gps_->date() + 
-							   "_" + 
-							   gps_->timeStamp();
-			}
+            if (checkBoxSN_->IsChecked())
+            {
+            
+                sessionName_ = sessionName_ + 
+                               "_" + 
+                               gps_->date() + 
+                               "_" + 
+                               gps_->timeStamp();
+            }
 
             wxString sessionDir = dir_ + "\\" + sessionName_;
             if (!wxDirExists(sessionDir))
@@ -183,11 +183,11 @@ namespace rics
 
             //A database is created, or if one already exists, the max frame number is retrieved.
             wxString filename = dir_ + 
-								"\\" + 
-								sessionName_ + 
-								"\\" + 
-								sessionName_ + 
-								".sdb";
+                                "\\" + 
+                                sessionName_ + 
+                                "\\" + 
+                                sessionName_ + 
+                                ".sdb";
 
             if (wxFileExists(filename))//if database already exists
             {
@@ -197,7 +197,7 @@ namespace rics
                 {
                     wxString cameraName = camera(i).cameraName();
                     db_->createTable(cameraName);//In case extra camera(s) are attached, new tables need to be created. 
-                    long int currentFrame = db_->maxFrame(cameraName);	            
+                    long int currentFrame = db_->maxFrame(cameraName);              
                     if (!currentFrame)
                     {
                         session_->setCurrentFrame(i, currentFrame);//Table is empty
@@ -212,9 +212,9 @@ namespace rics
             {
                 if (sessionExists)//if session exists, check for <session>.sdb file. If not found, return.
                 {
-			        wxMessageDialog(frame_, "Database \"" + sessionName_ + ".sdb\" does not exist. Cannot open session.", "Session Database Error", wxICON_HAND)
+                    wxMessageDialog(frame_, "Database \"" + sessionName_ + ".sdb\" does not exist. Cannot open session.", "Session Database Error", wxICON_HAND)
                     .ShowModal();
-			        EndModal(wxID_CANCEL);
+                    EndModal(wxID_CANCEL);
                     return;
                 }
                 else
@@ -249,7 +249,7 @@ namespace rics
 
                 if (!wxDirExists(dir))
                 {
-                    wxMkdir(dir);					
+                    wxMkdir(dir);                   
                 }
 
                 camera(i).setSessionPath(dir);
@@ -273,13 +273,13 @@ namespace rics
             }
         }
 
-		EndModal(wxID_CANCEL);
-	}
+        EndModal(wxID_CANCEL);
+    }
 
     void SessionPropDialog::onClose(wxCloseEvent& WXUNUSED(event))
     {     
         //onOK(wxCommandEvent());
-		EndModal(GetReturnCode());
+        EndModal(GetReturnCode());
     } 
     
     void SessionPropDialog::onTxtSN(wxCommandEvent& WXUNUSED(event))

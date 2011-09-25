@@ -50,7 +50,7 @@ namespace rics
     numCameras_(cameras_->size()),
     session_(numCameras_),
     np_(new NotePad),
-	cameraPropDialog_(this, wxT("Camera Properties"), cameras),
+    cameraPropDialog_(this, wxT("Camera Properties"), cameras),
     gpsPropDialog_(this, wxT("GPS Properties"), &gps_),
     sessionPropDialog_(this, "New Session", &session_, cameras, &db_, &gps_),
     openSessionDialog_(this, &session_, cameras, &db_),
@@ -79,8 +79,8 @@ namespace rics
         wxMenu *menuOptions = new wxMenu;     
         menuOptions->Append(ID_CameraProperties, _T("&Camera Properties...\tCtrl-C"), _T("Camera Properties..."));
         menuOptions->Append(ID_GPSProperties, _T("&GPS Properties...\tCtrl-G"), _T("GPS Properties..."));
-		menuOptions->AppendSeparator();
-		menuOptions->Append(ID_NotePadSettings, _T("&Damage Level Settings...\tCtrl-D"), _T("Damage Level Settings..."));
+        menuOptions->AppendSeparator();
+        menuOptions->Append(ID_NotePadSettings, _T("&Damage Level Settings...\tCtrl-D"), _T("Damage Level Settings..."));
  
         //Help item
         wxMenu *menuHelp = new wxMenu;
@@ -95,25 +95,25 @@ namespace rics
         menuBar->Append(menuHelp, _T("&Help"));
         SetMenuBar(menuBar);
 
-       	wxBoxSizer* frameSizer = new wxBoxSizer(wxVERTICAL);
-	
-		wxToolBar* toolBar = new wxToolBar(this, 
+        wxBoxSizer* frameSizer = new wxBoxSizer(wxVERTICAL);
+    
+        wxToolBar* toolBar = new wxToolBar(this, 
                                            wxID_ANY,
-							               wxDefaultPosition, 
+                                           wxDefaultPosition, 
                                            wxDefaultSize, 
                                            wxTB_FLAT | wxTB_HORIZONTAL);
-		wxBitmap bmpNew(new_xpm);
+        wxBitmap bmpNew(new_xpm);
         wxBitmap bmpOpen(folder_xpm);
-		wxBitmap bmpCamera(camera_xpm);
-		wxBitmap bmpGPS(map_xpm);
+        wxBitmap bmpCamera(camera_xpm);
+        wxBitmap bmpGPS(map_xpm);
         wxBitmap bmpTest(film_xpm);
-		toolBar->AddTool(ID_NewSession_Icon, bmpNew, wxT("New Session"), wxT("New Session"));
+        toolBar->AddTool(ID_NewSession_Icon, bmpNew, wxT("New Session"), wxT("New Session"));
         toolBar->AddTool(ID_OpenSession_Icon, bmpOpen, wxT("Open Session"), wxT("Open Session"));
         toolBar->AddTool(ID_Test_Icon, bmpTest, wxT("Test"), wxT("Test"));
-		toolBar->AddSeparator();
-		toolBar->AddTool(ID_CameraProperties_Icon, bmpCamera, wxT("Camera Properties"), wxT("Camera Properties"));
-		toolBar->AddTool(ID_GPSProperties_Icon, bmpGPS, wxT("GPS Properties"), wxT("GPS Properties"));
-		toolBar->Realize();
+        toolBar->AddSeparator();
+        toolBar->AddTool(ID_CameraProperties_Icon, bmpCamera, wxT("Camera Properties"), wxT("Camera Properties"));
+        toolBar->AddTool(ID_GPSProperties_Icon, bmpGPS, wxT("GPS Properties"), wxT("GPS Properties"));
+        toolBar->Realize();
         frameSizer->Add(toolBar, 0, wxEXPAND, 5);
 
         wxBitmap play(play_black_xpm);
@@ -122,7 +122,7 @@ namespace rics
         wxBitmap stop_grey(stop_grey_xpm);
         wxBitmap r1(record_red_xpm);
 
-		//Set the play tool bar
+        //Set the play tool bar
         playToolBar_ = new wxToolBar(this, wxID_ANY, wxDefaultPosition, wxSize(-1, -1), wxTB_FLAT | wxTB_HORIZONTAL);
         playToolBar_->SetToolBitmapSize(wxSize(16, 16));
         playToolBar_->AddTool(ID_Icon_Stop, wxT("Stop"), stop, stop_grey, wxITEM_NORMAL, wxT("Stop"));
@@ -139,7 +139,7 @@ namespace rics
         frameSizer->Add(playToolBar_, 0, wxEXPAND, 5);
 
         //Set the status bar
-		statusBar_ = new wxStatusBar(this, wxID_ANY, wxFULL_REPAINT_ON_RESIZE, "statusBar");
+        statusBar_ = new wxStatusBar(this, wxID_ANY, wxFULL_REPAINT_ON_RESIZE, "statusBar");
         statusBar_->SetFieldsCount(3);
         int widths[] = {100, 200, -1};
         statusBar_->SetStatusWidths(3, widths);
@@ -147,7 +147,7 @@ namespace rics
         statusBar_->SetStatusText("Test Mode", 2);
         SetStatusBar(statusBar_);
 
-		canvas_ = new Canvas(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, cameras_, &gps_, &session_, &db_, np_);
+        canvas_ = new Canvas(this, wxID_ANY, wxDefaultPosition, wxDefaultSize, cameras_, &gps_, &session_, &db_, np_);
 
         frameSizer->Add(canvas_, 1, wxEXPAND);
         SetSizer(frameSizer);
@@ -161,7 +161,7 @@ namespace rics
     {
     }
     
-	//Calls onClose
+    //Calls onClose
     void Frame::onQuit(wxCommandEvent& WXUNUSED(event))
     {
         Close(TRUE);
@@ -171,7 +171,7 @@ namespace rics
     //deletes all threads, and stops the camera streams.
     void Frame::onClose(wxCloseEvent& WXUNUSED(event))
     {
-		np_->saveFile();
+        np_->saveFile();
 
         canvas_->deleteAllThreads();
         
@@ -188,7 +188,7 @@ namespace rics
     //(2) all dialogs explicitly closed.
     void Frame::unpluggedClose()
     {
-		np_->saveFile();
+        np_->saveFile();
 
         for (size_t i = 0; i < numCameras_; ++i)
         {
@@ -219,8 +219,8 @@ namespace rics
         Destroy();
     }
 
-	//This is a wx timer event that executes the commands below
-	//at set times (set by timer_)
+    //This is a wx timer event that executes the commands below
+    //at set times (set by timer_)
     void Frame::onTimer(wxTimerEvent& WXUNUSED(event))
     {
         wxString frameRateText = "Frame rates: ";
@@ -257,7 +257,7 @@ namespace rics
     {
         sessionPropDialog_.ShowModal();
 
-		np_->openFile();
+        np_->openFile();
  
         if (session_.sessionNameIsEmpty())
         {
@@ -294,9 +294,9 @@ namespace rics
             if (wxMessageBox("Revert to Test Mode?", "Test Mode", wxOK | wxCANCEL | wxICON_EXCLAMATION, this) == wxOK)
             { 
                 session_.setSaveImages(false);
-		        session_.setCreateDB(false);
-    	        session_.setSessionName("");
-		        session_.setPath("");
+                session_.setCreateDB(false);
+                session_.setSessionName("");
+                session_.setPath("");
                 np_->openFile();
                 SetTitle("RICS (Test Mode)");
                 statusBar_->SetStatusText("Test Mode", 2);
@@ -358,8 +358,8 @@ namespace rics
 
     void Frame::onCameraProperties(wxCommandEvent& WXUNUSED(event))
     {
-		cameraPropDialog_.setPlay(play());
-		cameraPropDialog_.ShowModal();
+        cameraPropDialog_.setPlay(play());
+        cameraPropDialog_.ShowModal();
         canvas_->setCameraNames();
     }
 
@@ -399,32 +399,32 @@ namespace rics
         wxMessageBox(msg, _T("About RICS"), wxOK | wxICON_INFORMATION, this);
     }
 
-	////////////////////////////////////////////////////////////////////////////////////////////////////
+    ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////Tool bar icons
     void Frame::onNewSessionIcon(wxCommandEvent& event)
-	{
-		onNewSession(event);
-	}
+    {
+        onNewSession(event);
+    }
 
     void Frame::onOpenSessionIcon(wxCommandEvent& event)
-	{
-		onOpenSession(event);
-	}
+    {
+        onOpenSession(event);
+    }
 
     void Frame::onTestIcon(wxCommandEvent& event)
     {
-		onTest(event);
-	}
+        onTest(event);
+    }
 
-	void Frame::onCameraPropertiesIcon(wxCommandEvent& event)
-	{
-		onCameraProperties(event);
-	}
+    void Frame::onCameraPropertiesIcon(wxCommandEvent& event)
+    {
+        onCameraProperties(event);
+    }
 
-	void Frame::onGPSPropertiesIcon(wxCommandEvent& event)
-	{
-		onGPSProperties(event);
-	}
+    void Frame::onGPSPropertiesIcon(wxCommandEvent& event)
+    {
+        onGPSProperties(event);
+    }
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////Accessor method for attributes
@@ -455,11 +455,11 @@ namespace rics
 
         EVT_CLOSE(Frame::onClose)
 
-		EVT_TOOL(ID_NewSession_Icon, Frame::onNewSessionIcon)
+        EVT_TOOL(ID_NewSession_Icon, Frame::onNewSessionIcon)
         EVT_TOOL(ID_OpenSession_Icon, Frame::onOpenSessionIcon)
         EVT_TOOL(ID_Test_Icon, Frame::onTestIcon)
-		EVT_TOOL(ID_CameraProperties_Icon, Frame::onCameraPropertiesIcon)
-		EVT_TOOL(ID_GPSProperties_Icon, Frame::onGPSPropertiesIcon)
+        EVT_TOOL(ID_CameraProperties_Icon, Frame::onCameraPropertiesIcon)
+        EVT_TOOL(ID_GPSProperties_Icon, Frame::onGPSPropertiesIcon)
 
         EVT_TIMER(ID_Timer, Frame::onTimer)
     END_EVENT_TABLE()
