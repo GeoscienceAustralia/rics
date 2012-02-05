@@ -4,7 +4,7 @@ Author: Nariman Habili
 Description: The main frame. Sets the menu and status bar. Help file in pdf
              format is launched here. The Canvas class is instantiated here.
 
-Copyright (c) 2011 Commonwealth of Australia (Geoscience Australia)
+Copyright (c) 2011-2012 Commonwealth of Australia (Geoscience Australia)
 
 This file is part of RICS.
 
@@ -393,7 +393,7 @@ namespace rics
                        "\n\nDeveloped by:" + 
                        "\nNariman Habili" +
                        "\n\nLicence:" +
-                       "\n" + (wxChar)(169) + " 2011 Commonwealth of Australia (Geoscience Australia)" +
+                       "\n" + (wxChar)(169) + " 2011-2012 Commonwealth of Australia (Geoscience Australia)" +
                        "\nGNU GPLv3, see http://www.gnu.org/licenses/";             
            
         wxMessageBox(msg, _T("About RICS"), wxOK | wxICON_INFORMATION, this);

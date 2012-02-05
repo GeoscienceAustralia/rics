@@ -4,7 +4,7 @@ Author: Nariman Habili
 Description: The main frame. Sets the menu and status bar. Help file in pdf
              format is launched here. The Canvas class is instantiated here.
 
-Copyright (c) 2011 Commonwealth of Australia (Geoscience Australia)
+Copyright (c) 2011-2012 Commonwealth of Australia (Geoscience Australia)
 
 This file is part of RICS.
 
