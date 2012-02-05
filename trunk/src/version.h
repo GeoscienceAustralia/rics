@@ -3,7 +3,7 @@ Author: Nariman Habili
 
 Description: Information on different versions.
 
-Copyright (c) 2011 Commonwealth of Australia (Geoscience Australia)
+Copyright (c) 2011-2012 Commonwealth of Australia (Geoscience Australia)
 
 This file is part of RICS.
 

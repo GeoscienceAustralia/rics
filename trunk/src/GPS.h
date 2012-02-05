@@ -4,7 +4,7 @@ Author: Nariman Habili
 Description: The GPS is initiased here and its properties are set here. 
              The GPS values are also formatted here.
 
-Copyright (c) 2011 Commonwealth of Australia (Geoscience Australia)
+Copyright (c) 2011-2012 Commonwealth of Australia (Geoscience Australia)
 
 This file is part of RICS.
 
