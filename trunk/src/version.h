@@ -55,8 +55,9 @@ along with RICS.  If not, see <http://www.gnu.org/licenses/>.
       GPS date/time now added to session names (optional).
       Added bearing (heading) to the time/lat/lon already recorded in the
       notepad spreadsheet.
+1.4.1 Turned on SQLite journaling to save against database corruption.
 ****************************************************************************/
 
-#define RICS_VERSION "1.4.0"
+#define RICS_VERSION "1.4.1"
  
 #endif //VERSION_H

@@ -39,14 +39,14 @@ namespace rics
     {
         sqlite3_open(filename.ToAscii(), &db_);
 
-        //The following 2 pragmas will speed up disk I/O. Please 
+        //The following pragma will speed up disk I/O.
         char *errMsg1 = 0;
         int code = sqlite3_exec(db_, "PRAGMA synchronous=OFF", NULL, 0, &errMsg1);
         sqlite3_free(errMsg1);
 
-        char *errMsg2 = 0;
-        code = sqlite3_exec(db_, "PRAGMA journal_mode=OFF", NULL, 0, &errMsg2);
-        sqlite3_free(errMsg2);
+        //char *errMsg2 = 0;
+        //code = sqlite3_exec(db_, "PRAGMA journal_mode=OFF", NULL, 0, &errMsg2);
+        //sqlite3_free(errMsg2);
 
         //This avoids each new SQL statement having a new
         //transaction started for it, which is very expensive.
