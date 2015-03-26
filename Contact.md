@@ -1,0 +1,1 @@
+This software was developed by Nariman Habili. If you have any questions, comments or suggestions, please contact Nariman Habili at nariman.habili AT gmail.com.
